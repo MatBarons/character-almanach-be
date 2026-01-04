@@ -3,7 +3,6 @@ package com.character_almanach.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,15 +39,13 @@ public class CharacterController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/new")
-    public ResponseEntity<CharacterDto> createCharacter(@RequestBody @Valid CharacterCreateDto entity) {
-        this.characterService.createCharacter(entity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+    public CharacterDto createCharacter(@RequestBody @Valid CharacterCreateDto entity) {
+        return this.characterService.createCharacter(entity);
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping("/{id}")
-    public String updateCharacter(@PathVariable Long id, @RequestBody @Valid CharacterUpdateDto entity) {
-        this.characterService.updateCharacter(id, entity);
-        return "Character updated successfully";
+    public CharacterDto updateCharacter(@PathVariable Long id, @RequestBody @Valid CharacterUpdateDto entity) {
+        return this.characterService.updateCharacter(id, entity);
     }
 }

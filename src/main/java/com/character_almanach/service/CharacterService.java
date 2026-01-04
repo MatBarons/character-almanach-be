@@ -13,6 +13,8 @@ import com.character_almanach.dto.put.CharacterUpdateDto;
 import com.character_almanach.repository.CharacterRepository;
 import com.character_almanach.service.interfaces.ICharacterService;
 
+import jakarta.validation.Valid;
+
 @Service
 @Transactional
 public class CharacterService implements ICharacterService{
@@ -30,12 +32,12 @@ public class CharacterService implements ICharacterService{
     }
     
     @Override
-    public CharacterDto createCharacter(CharacterCreateDto characterCreateDto) {
+    public CharacterDto createCharacter(@Valid CharacterCreateDto characterCreateDto) {
         return CharacterMapper.toDto(this.characterRepository.save(CharacterMapper.toEntity(characterCreateDto)));
     }
 
     @Override
-    public CharacterDto updateCharacter(Long id, CharacterUpdateDto characterUpdateDto) {
+    public CharacterDto updateCharacter(Long id, @Valid CharacterUpdateDto characterUpdateDto) {
         return CharacterMapper.toDto(this.characterRepository.save(CharacterMapper.toEntity(characterUpdateDto)));
     }
 }
