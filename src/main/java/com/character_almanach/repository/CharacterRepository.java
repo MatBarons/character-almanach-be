@@ -11,4 +11,5 @@ import com.character_almanach.model.Character;
 public interface CharacterRepository extends JpaRepository<Character,Long>{
     public List<Character> findAll();
     public Optional<Character> findById(Long id);
+    public Character save(Character character);
 }

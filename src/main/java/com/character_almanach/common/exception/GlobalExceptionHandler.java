@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.character_almanach.common.exception.character.CharacterDuplicateClassesException;
 import com.character_almanach.common.exception.character.CharacterNotFoundException;
 
 @RestControllerAdvice
@@ -18,6 +19,13 @@ public class GlobalExceptionHandler {
         Map<String, String> errorResponse = new HashMap<>();
         errorResponse.put("error", ex.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CharacterDuplicateClassesException.class)
+    public ResponseEntity<Map<String, String>> handleDuplicateClasses(CharacterDuplicateClassesException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     // Optional: Handle other exceptions globally

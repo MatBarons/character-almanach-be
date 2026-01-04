@@ -1,6 +1,7 @@
 package com.character_almanach.common.mappers;
 import com.character_almanach.dto.create.CharacterCreateDto;
 import com.character_almanach.dto.get.CharacterDto;
+import com.character_almanach.dto.put.CharacterUpdateDto;
 import com.character_almanach.model.Character;
 import com.character_almanach.model.CharacterClass;
 
@@ -26,6 +27,22 @@ public final class CharacterMapper {
             dto.getName(),
             dto.getTotalLevel(),
             dto.getRace(),
+            StatsMapper.toEntity(dto.getStats())
+        );
+
+        dto.getClasses().forEach(classDto -> {
+            CharacterClass clazz =
+                CharacterClassMapper.toEntity(classDto);
+            character.addClass(clazz); 
+        });
+
+        return character;
+    }
+
+    public static Character toEntity(CharacterUpdateDto dto) {
+
+        Character character = new Character(
+            dto.getTotalLevel(),
             StatsMapper.toEntity(dto.getStats())
         );
 

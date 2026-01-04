@@ -3,6 +3,8 @@ package com.character_almanach.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.character_almanach.common.annotation.total_level.ValidTotalLevel;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -17,6 +19,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "characters")
+@ValidTotalLevel
 @NoArgsConstructor
 @Getter
 public class Character {
@@ -48,6 +51,11 @@ public class Character {
         this.name = name;
         this.totalLevel = totalLevel;
         this.race = race;
+        this.stats = stats;
+    }
+
+    public Character(int totalLevel, Stats stats) {
+        this.totalLevel = totalLevel;
         this.stats = stats;
     }
 

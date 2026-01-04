@@ -3,6 +3,7 @@ package com.character_almanach.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import com.character_almanach.dto.create.CharacterCreateDto;
 import com.character_almanach.dto.get.CharacterDto;
+import com.character_almanach.dto.put.CharacterUpdateDto;
 import com.character_almanach.service.CharacterService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/character")
@@ -35,16 +40,15 @@ public class CharacterController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/new")
-    public String createCharacter(@RequestBody String entity) {
-        //this.characterService.createCharacter()        
-
-        return "Character created successfully";
+    public ResponseEntity<CharacterDto> createCharacter(@RequestBody @Valid CharacterCreateDto entity) {
+        this.characterService.createCharacter(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    public String updateCharacter(@PathVariable String id, @RequestBody String entity) {
-        
+    public String updateCharacter(@PathVariable Long id, @RequestBody @Valid CharacterUpdateDto entity) {
+        this.characterService.updateCharacter(id, entity);
         return "Character updated successfully";
     }
 }
