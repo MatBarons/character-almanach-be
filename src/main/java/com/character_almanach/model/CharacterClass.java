@@ -26,6 +26,9 @@ public class CharacterClass {
     @Column(nullable = false, length = 30)
     private String className;
 
+    @Column(nullable = true, length = 30)
+    private String subclassName;
+
     @Column(nullable = false)
     private int level;
 
@@ -34,8 +37,9 @@ public class CharacterClass {
     @JoinColumn(name = "character_id", nullable = false)
     private Character character;
 
-    public CharacterClass(String className, int level) {
+    public CharacterClass(String className, String subclassName, int level) {
         this.className = className;
+        this.subclassName = subclassName;
         this.level = level;
     }
 }

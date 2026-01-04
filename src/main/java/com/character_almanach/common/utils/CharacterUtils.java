@@ -1,0 +1,24 @@
+package com.character_almanach.common.utils;
+
+import com.character_almanach.dto.get.CharacterClassDto;
+import com.character_almanach.dto.get.CharacterDto;
+import com.character_almanach.dto.put.CharacterUpdateDto;
+
+
+public class CharacterUtils {
+    public static boolean checkSubClassValidity(CharacterUpdateDto characterUpdateDto, CharacterDto existingCharacter) {
+        for(int i = 0; i < characterUpdateDto.getClasses().size(); i++) {
+            CharacterClassDto updatedClass = characterUpdateDto.getClasses().get(i);
+            CharacterClassDto existingClass = existingCharacter.getClasses().get(i);
+            if(updatedClass.getSubclassName() == null && existingClass.getSubclassName() != null) {
+                return false;
+            }
+            if(updatedClass.getSubclassName() != null && 
+                existingClass.getSubclassName() != null && 
+                !updatedClass.getSubclassName().equals(existingClass.getSubclassName())) {
+                return false;
+            }
+        }
+        return true;
+    }
+}

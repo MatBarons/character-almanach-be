@@ -9,5 +9,6 @@ import lombok.Setter;
 @Setter
 public class CharacterClassDto {
     private String className;
+    private String subclassName;
     private int level;
 }

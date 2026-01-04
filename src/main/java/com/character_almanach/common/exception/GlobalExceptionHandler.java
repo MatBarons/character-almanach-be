@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.character_almanach.common.exception.character.CharacterDuplicateClassesException;
 import com.character_almanach.common.exception.character.CharacterNotFoundException;
+import com.character_almanach.common.exception.character.ReducingCharacterLevelException;
+import com.character_almanach.common.exception.character.SubclassChangeNotAllowedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -26,6 +28,20 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CharacterDuplicateClassesException.class)
     public ResponseEntity<Map<String, String>> handleDuplicateClasses(CharacterDuplicateClassesException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ReducingCharacterLevelException.class)
+    public ResponseEntity<Map<String, String>> handleReducingCharacterLevel(ReducingCharacterLevelException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SubclassChangeNotAllowedException.class)
+    public ResponseEntity<Map<String, String>> handleSubclassChangeNotAllowed(SubclassChangeNotAllowedException ex) {
         Map<String, String> errorResponse = new HashMap<>();
         errorResponse.put("error", ex.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
