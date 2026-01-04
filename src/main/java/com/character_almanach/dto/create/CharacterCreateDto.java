@@ -1,6 +1,7 @@
 package com.character_almanach.dto.create;
 
 
+import com.character_almanach.common.annotation.multiple_same_class.ValidCharacterClasses;
 import com.character_almanach.common.annotation.total_level.ValidTotalLevel;
 import com.character_almanach.dto.get.CharacterClassDto;
 import com.character_almanach.dto.get.StatsDto;
@@ -19,6 +20,7 @@ import jakarta.validation.constraints.NotNull;
 @Setter
 @AllArgsConstructor
 @ValidTotalLevel
+@ValidCharacterClasses
 public class CharacterCreateDto {
 
     @NotBlank

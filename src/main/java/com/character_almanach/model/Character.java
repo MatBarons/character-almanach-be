@@ -1,9 +1,10 @@
 package com.character_almanach.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.character_almanach.common.annotation.total_level.ValidTotalLevel;
+import com.character_almanach.common.exception.character.CharacterDuplicateClassesException;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -45,7 +46,7 @@ public class Character {
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
-    private List<CharacterClass> classes = new ArrayList<>();
+    private Set<CharacterClass> classes = new HashSet<>();
 
     public Character(String name, int totalLevel, String race, Stats stats) {
         this.name = name;
@@ -60,12 +61,10 @@ public class Character {
     }
 
     public void addClass(CharacterClass c) {
-        classes.add(c);
+        final boolean res = classes.add(c);
+        if(!res){
+            throw new CharacterDuplicateClassesException(c.getClassName());
+        }
         c.setCharacter(this);
-    }
-
-    public void removeClass(CharacterClass c) {
-        classes.remove(c);
-        c.setCharacter(null);
     }
 }
