@@ -1,5 +1,6 @@
 package com.character_almanach.service;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -43,11 +44,11 @@ public class CharacterServiceTest {
 
         when(characterRepository.findAll()).thenReturn(List.of(character1, character2, character3));
 
-        assertEquals(characterService.getAllCharacters(), List.of(
+        assertArrayEquals(characterService.getAllCharacters().toArray(), List.of(
             CharacterMapper.toDto(character1),
             CharacterMapper.toDto(character2),
             CharacterMapper.toDto(character3)
-        ));
+        ).toArray());
     }
 
     @Test
