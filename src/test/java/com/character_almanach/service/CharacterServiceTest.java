@@ -31,17 +31,16 @@ public class CharacterServiceTest {
     void shouldReturnAllCharacters() {
         Stats stats1 = new Stats(16, 14, 15, 12, 10, 13);
         Character character1 = new Character("Arthas", 5, "Human", stats1);
-        character1.addClass(new CharacterClass("Paladin", 3));
-        character1.addClass(new CharacterClass("Warrior", 2));
+        character1.addClass(new CharacterClass("Paladin", "Oath of the Ancients", 3));
+        character1.addClass(new CharacterClass("Warrior", "Samurai", 2));
 
         Stats stats2 = new Stats(10, 18, 12, 14, 13, 8);
         Character character2 = new Character("Lyra", 4, "Elf", stats2);
-        character2.addClass(new CharacterClass("Rogue", 4));
+        character2.addClass(new CharacterClass("Rogue", "Thief", 4));
 
         Stats stats3 = new Stats(8, 12, 10, 18, 16, 14);
         Character character3 = new Character("Merlin", 7, "Human", stats3);
-        character3.addClass(new CharacterClass("Wizard", 7));
-
+        character3.addClass(new CharacterClass("Wizard", "School of Evocation", 7));
         when(characterRepository.findAll()).thenReturn(List.of(character1, character2, character3));
 
         assertArrayEquals(characterService.getAllCharacters().toArray(), List.of(
@@ -55,8 +54,8 @@ public class CharacterServiceTest {
     void shouldReturnCharacterById() {
         Stats stats = new Stats(16, 14, 15, 12, 10, 13);
         Character character = new Character("Arthas", 5, "Human", stats);
-        character.addClass(new CharacterClass("Paladin", 3));
-        character.addClass(new CharacterClass("Warrior", 2));
+        character.addClass(new CharacterClass("Paladin", "Oath of the Ancients", 3));
+        character.addClass(new CharacterClass("Warrior", "Samurai", 2));
 
         when(characterRepository.findById(1L)).thenReturn(Optional.of(character));
 
