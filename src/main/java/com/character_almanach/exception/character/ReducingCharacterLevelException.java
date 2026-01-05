@@ -1,4 +1,4 @@
-package com.character_almanach.common.exception.character;
+package com.character_almanach.exception.character;
 
 public class ReducingCharacterLevelException extends RuntimeException {
     public ReducingCharacterLevelException(Long id) {

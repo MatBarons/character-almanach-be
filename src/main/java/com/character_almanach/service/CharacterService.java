@@ -6,15 +6,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.Valid;
 
-import com.character_almanach.common.exception.character.CharacterNotFoundException;
-import com.character_almanach.common.exception.character.ClassRemovalNotAllowedException;
-import com.character_almanach.common.exception.character.ReducingCharacterLevelException;
-import com.character_almanach.common.exception.character.SubclassChangeNotAllowedException;
-import com.character_almanach.common.mappers.CharacterMapper;
-import com.character_almanach.common.utils.CharacterUtils;
 import com.character_almanach.dto.create.CharacterCreateDto;
 import com.character_almanach.dto.get.CharacterDto;
 import com.character_almanach.dto.put.CharacterUpdateDto;
+import com.character_almanach.exception.character.CharacterNotFoundException;
+import com.character_almanach.exception.character.ClassRemovalNotAllowedException;
+import com.character_almanach.exception.character.ReducingCharacterLevelException;
+import com.character_almanach.exception.character.SubclassChangeNotAllowedException;
+import com.character_almanach.helper.CharacterHelper;
+import com.character_almanach.mappers.CharacterMapper;
 import com.character_almanach.repository.CharacterRepository;
 import com.character_almanach.service.interfaces.ICharacterService;
 
@@ -47,11 +47,11 @@ public class CharacterService implements ICharacterService{
             throw new ReducingCharacterLevelException(id);
         }
 
-        if(!CharacterUtils.checkClassRemoval(characterUpdateDto, existingCharacter)) {
+        if(!CharacterHelper.checkClassRemoval(characterUpdateDto, existingCharacter)) {
             throw new ClassRemovalNotAllowedException(id);
         }
 
-        if(!CharacterUtils.checkSubClassValidity(characterUpdateDto, existingCharacter)) {
+        if(!CharacterHelper.checkSubClassValidity(characterUpdateDto, existingCharacter)) {
             throw new SubclassChangeNotAllowedException(id);
         }
 

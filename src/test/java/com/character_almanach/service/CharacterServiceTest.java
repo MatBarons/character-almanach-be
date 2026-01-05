@@ -2,6 +2,7 @@ package com.character_almanach.service;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -15,7 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.character_almanach.model.CharacterClass;
 import com.character_almanach.model.Stats;
-import com.character_almanach.common.mappers.CharacterMapper;
+import com.character_almanach.exception.character.CharacterNotFoundException;
+import com.character_almanach.mappers.CharacterMapper;
 import com.character_almanach.model.Character;
 import com.character_almanach.repository.CharacterRepository;
 
@@ -60,5 +62,16 @@ public class CharacterServiceTest {
         when(characterRepository.findById(1L)).thenReturn(Optional.of(character));
 
         assertEquals(characterService.getCharacter(1L), CharacterMapper.toDto(character));
+    }
+
+    @Test
+    void shouldThrowExceptionForMissingCharacterById() {
+        when(characterRepository.findById(999L))
+            .thenReturn(Optional.empty());
+
+        assertThrows(
+            CharacterNotFoundException.class,
+            () -> characterService.getCharacter(999L)
+        );
     }
 }

@@ -3,8 +3,8 @@ package com.character_almanach.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.character_almanach.common.annotation.total_level.ValidTotalLevel;
-import com.character_almanach.common.exception.character.CharacterDuplicateClassesException;
+import com.character_almanach.annotation.total_level.ValidTotalLevel;
+import com.character_almanach.exception.character.CharacterDuplicateClassesException;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

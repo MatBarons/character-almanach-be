@@ -3,27 +3,31 @@ package com.character_almanach.controller;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureWebMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import com.character_almanach.common.mappers.CharacterMapper;
+import com.character_almanach.dto.create.CharacterCreateDto;
+import com.character_almanach.dto.get.CharacterClassDto;
 import com.character_almanach.dto.get.CharacterDto;
+import com.character_almanach.dto.get.StatsDto;
+import com.character_almanach.mappers.CharacterMapper;
 import com.character_almanach.model.Character;
 import com.character_almanach.model.CharacterClass;
 import com.character_almanach.model.Stats;
 import com.character_almanach.service.CharacterService;
 
-@SpringBootTest
-@AutoConfigureWebMvc
-@Transactional
+import tools.jackson.databind.ObjectMapper;
+
+@WebMvcTest(CharacterController.class)
 public class CharacterControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -41,6 +45,7 @@ public class CharacterControllerTest {
         Stats stats2 = new Stats(10, 18, 12, 14, 13, 8);
         Character character2 = new Character("Lyra", 4, "Elf", stats2);
         character2.addClass(new CharacterClass("Rogue", "Thief", 4));
+
         Stats stats3 = new Stats(8, 12, 10, 18, 16, 14);
         Character character3 = new Character("Merlin", 7, "Human", stats3);
         character3.addClass(new CharacterClass("Wizard", "School of Evocation", 7));
@@ -53,7 +58,7 @@ public class CharacterControllerTest {
 
         when(characterService.getAllCharacters()).thenReturn(mockCharacters);
 
-        mockMvc.perform(get("/characters"))
+        mockMvc.perform(get("/characters/all"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(3))
             .andExpect(jsonPath("$[0].name").value("Arthas"))
@@ -73,14 +78,40 @@ public class CharacterControllerTest {
         mockMvc.perform(get("/characters/1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name").value("Arthas"))
-            .andExpect(jsonPath("$.level").value(5))
+            .andExpect(jsonPath("$.totalLevel").value(5))
             .andExpect(jsonPath("$.race").value("Human"));
     }
 
-    void shouldReturnMissingCharacterById() throws Exception {
-        when(characterService.getCharacter(999L)).thenReturn(null);
+    @Test
+    void shouldSaveCharacter() throws Exception {
 
-        mockMvc.perform(get("/characters/999"))
-            .andExpect(status().isNotFound());
+        CharacterCreateDto character = new CharacterCreateDto(
+                "Gandalf",
+                20,
+                "Human",
+                new StatsDto(18, 14, 16, 20, 18, 17),
+                List.of(
+                    new CharacterClassDto("Wizard", "School of Evocation", 20)
+                )
+            );
+
+        when(characterService.createCharacter(any(CharacterCreateDto.class))).thenReturn(
+            new CharacterDto(
+                4L,
+                "Gandalf",
+                20,
+                "Human",
+                List.of(
+                    new CharacterClassDto("Wizard", "School of Evocation", 20)
+                ),
+                new StatsDto(18, 14, 16, 20, 18, 17)
+            )
+        );
+
+        mockMvc.perform(post("/characters/new")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content((new ObjectMapper()).writeValueAsString(character)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.name").value("Gandalf"));
     }
 }

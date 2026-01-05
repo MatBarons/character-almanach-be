@@ -2,8 +2,8 @@ package com.character_almanach.dto.put;
 
 import java.util.List;
 
-import com.character_almanach.common.annotation.multiple_same_class.ValidCharacterClasses;
-import com.character_almanach.common.annotation.total_level.ValidTotalLevel;
+import com.character_almanach.annotation.multiple_same_class.ValidCharacterClasses;
+import com.character_almanach.annotation.total_level.ValidTotalLevel;
 import com.character_almanach.dto.get.CharacterClassDto;
 import com.character_almanach.dto.get.StatsDto;
 

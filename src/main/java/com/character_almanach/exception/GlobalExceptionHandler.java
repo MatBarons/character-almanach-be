@@ -1,4 +1,4 @@
-package com.character_almanach.common.exception;
+package com.character_almanach.exception;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.character_almanach.common.exception.character.CharacterDuplicateClassesException;
-import com.character_almanach.common.exception.character.CharacterNotFoundException;
-import com.character_almanach.common.exception.character.ClassRemovalNotAllowedException;
-import com.character_almanach.common.exception.character.ReducingCharacterLevelException;
-import com.character_almanach.common.exception.character.SubclassChangeNotAllowedException;
+import com.character_almanach.exception.character.CharacterDuplicateClassesException;
+import com.character_almanach.exception.character.CharacterNotFoundException;
+import com.character_almanach.exception.character.ClassRemovalNotAllowedException;
+import com.character_almanach.exception.character.ReducingCharacterLevelException;
+import com.character_almanach.exception.character.SubclassChangeNotAllowedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

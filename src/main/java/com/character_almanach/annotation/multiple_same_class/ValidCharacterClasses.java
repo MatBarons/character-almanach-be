@@ -1,4 +1,4 @@
-package com.character_almanach.common.annotation.multiple_same_class;
+package com.character_almanach.annotation.multiple_same_class;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

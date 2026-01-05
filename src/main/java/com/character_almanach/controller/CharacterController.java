@@ -20,7 +20,7 @@ import com.character_almanach.service.CharacterService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/character")
+@RequestMapping("/characters")
 public class CharacterController {
     @Autowired
     private CharacterService characterService;

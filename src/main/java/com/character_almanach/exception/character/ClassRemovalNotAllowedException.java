@@ -1,4 +1,4 @@
-package com.character_almanach.common.exception.character;
+package com.character_almanach.exception.character;
 
 public class ClassRemovalNotAllowedException extends RuntimeException {
     public ClassRemovalNotAllowedException(Long characterId) {

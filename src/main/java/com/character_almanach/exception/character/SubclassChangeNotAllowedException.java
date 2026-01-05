@@ -1,4 +1,4 @@
-package com.character_almanach.common.exception.character;
+package com.character_almanach.exception.character;
 
 public class SubclassChangeNotAllowedException extends RuntimeException {
     public SubclassChangeNotAllowedException(Long characterId) {

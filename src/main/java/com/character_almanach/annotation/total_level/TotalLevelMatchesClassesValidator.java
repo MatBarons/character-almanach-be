@@ -1,4 +1,4 @@
-package com.character_almanach.common.annotation.total_level;
+package com.character_almanach.annotation.total_level;
 
 import com.character_almanach.model.CharacterClass;
 import com.character_almanach.model.Character;

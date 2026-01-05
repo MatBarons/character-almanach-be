@@ -1,4 +1,4 @@
-package com.character_almanach.common.mappers;
+package com.character_almanach.mappers;
 
 import com.character_almanach.dto.get.CharacterClassDto;
 import com.character_almanach.model.CharacterClass;

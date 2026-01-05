@@ -1,11 +1,10 @@
-package com.character_almanach.common.utils;
+package com.character_almanach.helper;
 
 import com.character_almanach.dto.get.CharacterClassDto;
 import com.character_almanach.dto.get.CharacterDto;
 import com.character_almanach.dto.put.CharacterUpdateDto;
 
-
-public class CharacterUtils {
+public class CharacterHelper {
     public static boolean checkSubClassValidity(CharacterUpdateDto characterUpdateDto, CharacterDto existingCharacter) {
         for(int i = 0; i < characterUpdateDto.getClasses().size(); i++) {
             CharacterClassDto updatedClass = characterUpdateDto.getClasses().get(i);

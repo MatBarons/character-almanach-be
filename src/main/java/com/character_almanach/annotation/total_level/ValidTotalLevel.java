@@ -1,4 +1,4 @@
-package com.character_almanach.common.annotation.total_level;
+package com.character_almanach.annotation.total_level;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
