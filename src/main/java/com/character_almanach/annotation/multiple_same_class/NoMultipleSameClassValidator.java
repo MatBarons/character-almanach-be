@@ -1,15 +1,15 @@
 package com.character_almanach.annotation.multiple_same_class;
 
-import com.character_almanach.model.Character;
+import com.character_almanach.common.character.IHasClassesAndTotalLevel;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 public class NoMultipleSameClassValidator
-        implements ConstraintValidator<ValidCharacterClasses, Character> {
+        implements ConstraintValidator<ValidCharacterClasses, IHasClassesAndTotalLevel> {
 
     @Override
-    public boolean isValid(Character character, ConstraintValidatorContext context) {
+    public boolean isValid(IHasClassesAndTotalLevel character, ConstraintValidatorContext context) {
         if (character == null || character.getClasses() == null) {
             return true; // let @NotNull handle nulls
         }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.character_almanach.annotation.multiple_same_class.ValidCharacterClasses;
 import com.character_almanach.annotation.total_level.ValidTotalLevel;
+import com.character_almanach.common.character.GenericCharacter;
 import com.character_almanach.dto.get.CharacterClassDto;
 import com.character_almanach.dto.get.StatsDto;
 
@@ -16,17 +17,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
 @AllArgsConstructor
 @ValidTotalLevel
 @ValidCharacterClasses
-public class CharacterUpdateDto {
+public class CharacterUpdateDto extends GenericCharacter<CharacterClassDto> {
 
     @Min(1)
     @Max(20)
     private int totalLevel;
 
+    @Getter
     @Valid
     @NotNull
     private StatsDto stats;
@@ -34,5 +35,15 @@ public class CharacterUpdateDto {
     @Valid
     @NotEmpty
     private List<CharacterClassDto> classes;
+
+    @Override
+    public List<CharacterClassDto> getClasses() {
+        return classes;
+    }
+
+    @Override
+    public int getTotalLevel() {
+        return totalLevel;
+    }
 }
 

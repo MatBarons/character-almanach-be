@@ -1,5 +1,7 @@
 package com.character_almanach.model;
 
+import com.character_almanach.common.character.GenericClasses;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,7 +19,7 @@ import lombok.Setter;
 @Table(name = "classes")
 @Getter
 @NoArgsConstructor
-public class CharacterClass {
+public class CharacterClass extends GenericClasses{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

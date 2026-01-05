@@ -1,9 +1,11 @@
 package com.character_almanach.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.character_almanach.annotation.total_level.ValidTotalLevel;
+import com.character_almanach.common.character.GenericCharacter;
 import com.character_almanach.exception.character.CharacterDuplicateClassesException;
 
 import jakarta.persistence.CascadeType;
@@ -22,22 +24,25 @@ import lombok.NoArgsConstructor;
 @Table(name = "characters")
 @ValidTotalLevel
 @NoArgsConstructor
-@Getter
-public class Character {
+public class Character extends GenericCharacter {
 
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @Column(nullable = false, length = 50)
     private String name;
 
     @Column(nullable = false)
     private int totalLevel;
 
+    @Getter
     @Column(nullable = false, length = 30)
     private String race;
 
+    @Getter
     @Embedded
     private Stats stats;
 
@@ -66,5 +71,14 @@ public class Character {
             throw new CharacterDuplicateClassesException(c.getClassName());
         }
         c.setCharacter(this);
+    }
+
+    @Override
+    public List<CharacterClass> getClasses() {
+        return classes.stream().toList();
+    }
+    @Override
+    public int getTotalLevel() {
+        return totalLevel;
     }
 }
