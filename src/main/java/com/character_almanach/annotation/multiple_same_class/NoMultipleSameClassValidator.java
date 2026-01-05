@@ -14,7 +14,7 @@ public class NoMultipleSameClassValidator
             return true; // let @NotNull handle nulls
         }
 
-        return character.getClasses().stream().map(c -> c.getClassName()).toList().size() != character.getClasses().stream().map(c -> c.getClassName()).distinct().toList().size();
+        return character.getClasses().stream().map(c -> c.getClassName()).toList().size() == character.getClasses().stream().map(c -> c.getClassName()).distinct().toList().size();
     }
 }
 

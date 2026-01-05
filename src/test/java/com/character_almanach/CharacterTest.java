@@ -82,92 +82,105 @@ public class CharacterTest {
     }
 
     //TESTS FOR VALIDATIONS
-    /* 
     @Test
     void shouldReturnValidationErrorForInvalidCharacterName() throws Exception {
-        mockMvc.perform(
-            post("/characters/new",
-                new CharacterCreateDto(
-                    "",
-                    20,
-                    "Elf",
-                    new StatsDto(10, 10, 10, 10, 10, 10),
-                    List.of(
-                        new CharacterClassDto("Rogue", "Thief", 20)
-                    )
-                )
+
+        final CharacterCreateDto characterWithEmptyName = new CharacterCreateDto(
+            "",
+            20,
+            "Elf",
+            new StatsDto(10, 10, 10, 10, 10, 10),
+            List.of(
+                new CharacterClassDto("Rogue", "Thief", 20)
             )
+        );
+
+        mockMvc.perform(
+            (post("/characters/new")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content((new ObjectMapper()).writeValueAsString(characterWithEmptyName)))
         ).andExpect(status().isBadRequest());
     }
 
     @Test
     void shouldReturnValidationErrorForInvalidCharacterLevel() throws Exception {
-        mockMvc.perform(
-            post("/characters/new",
-                new CharacterCreateDto(
-                    "Legolas",
-                    25,
-                    "Elf",
-                    new StatsDto(10, 10, 10, 10, 10, 10),
-                    List.of(
-                        new CharacterClassDto("Rogue", "Thief", 25)
-                    )
-                )
+
+        final CharacterCreateDto characterWithInvalidLevel = new CharacterCreateDto(
+            "Legolas",
+            0,
+            "Elf",
+            new StatsDto(10, 10, 10, 10, 10, 10),
+            List.of(
+                new CharacterClassDto("Rogue", "Thief", 0)
             )
+        );
+
+        mockMvc.perform(
+            (post("/characters/new")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content((new ObjectMapper()).writeValueAsString(characterWithInvalidLevel)))
         ).andExpect(status().isBadRequest());
     }
 
     @Test
     void shouldReturnValidationErrorForInvalidCharacterRace() throws Exception {
-        mockMvc.perform(
-            post("/characters/new",
-                new CharacterCreateDto(
-                    "Legolas",
-                    20,
-                    "",
-                    new StatsDto(10, 10, 10, 10, 10, 10),
-                    List.of(
-                        new CharacterClassDto("Rogue", "Thief", 20)
-                    )
-                )
+
+        final CharacterCreateDto characterWithEmptyRace = new CharacterCreateDto(
+            "Legolas",
+            20,
+            "",
+            new StatsDto(10, 10, 10, 10, 10, 10),
+            List.of(
+                new CharacterClassDto("Rogue", "Thief", 20)
             )
+        );
+
+        mockMvc.perform(
+            (post("/characters/new")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content((new ObjectMapper()).writeValueAsString(characterWithEmptyRace)))
         ).andExpect(status().isBadRequest());
     }
 
     @Test
     void shouldReturnValidationErrorForInvalidCharacterLevelSum() throws Exception {
-        mockMvc.perform(
-            post("/characters/new",
-                new CharacterCreateDto(
-                    "Legolas",
-                    20,
-                    "Elf",
-                    new StatsDto(10, 10, 10, 10, 10, 10),
-                    List.of(
-                        new CharacterClassDto("Rogue", "Thief", 15),
-                        new CharacterClassDto("Paladin", "Oath of the Ancients", 15)
-                    )
-                )
+
+        final CharacterCreateDto characterWithInvalidLevelSum = new CharacterCreateDto(
+            "Legolas",
+            20,
+            "Elf",
+            new StatsDto(10, 10, 10, 10, 10, 10),
+            List.of(
+                new CharacterClassDto("Rogue", "Thief", 10),
+                new CharacterClassDto("Archer", "Sniper", 15)
             )
+        );
+
+        mockMvc.perform(
+            (post("/characters/new")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content((new ObjectMapper()).writeValueAsString(characterWithInvalidLevelSum)))
         ).andExpect(status().isBadRequest());
     }
 
     @Test
     void shouldReturnValidationErrorForInvalidCharacterMultipleSameClass() throws Exception {
-        mockMvc.perform(
-            post("/characters/new",
-                new CharacterCreateDto(
-                    "Legolas",
-                    20,
-                    "Elf",
-                    new StatsDto(10, 10, 10, 10, 10, 10),
-                    List.of(
-                        new CharacterClassDto("Rogue", "Thief", 10),
-                        new CharacterClassDto("Rogue", "Assassin", 10)
-                    )
-                )
+
+        final CharacterCreateDto characterWithMultipleSameClass = new CharacterCreateDto(
+            "Legolas",
+            20,
+            "Elf",
+            new StatsDto(10, 10, 10, 10, 10, 10),
+            List.of(
+                new CharacterClassDto("Rogue", "Thief", 10),
+                new CharacterClassDto("Rogue", "Assassin", 10)
             )
+        );
+
+        mockMvc.perform(
+            (post("/characters/new")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content((new ObjectMapper()).writeValueAsString(characterWithMultipleSameClass)))
         ).andExpect(status().isBadRequest());
     }
-    */
 }
