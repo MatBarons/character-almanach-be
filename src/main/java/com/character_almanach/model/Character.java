@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "characters")
 @ValidTotalLevel
 @NoArgsConstructor
-public class Character extends GenericCharacter {
+public class Character extends GenericCharacter<CharacterClass> {
 
     @Getter
     @Id
