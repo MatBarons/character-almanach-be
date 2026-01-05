@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import jakarta.validation.Valid;
 
 import com.character_almanach.common.exception.character.CharacterNotFoundException;
 import com.character_almanach.common.exception.character.ClassRemovalNotAllowedException;
@@ -16,8 +17,6 @@ import com.character_almanach.dto.get.CharacterDto;
 import com.character_almanach.dto.put.CharacterUpdateDto;
 import com.character_almanach.repository.CharacterRepository;
 import com.character_almanach.service.interfaces.ICharacterService;
-
-import jakarta.validation.Valid;
 
 @Service
 @Transactional
@@ -44,7 +43,7 @@ public class CharacterService implements ICharacterService{
     public CharacterDto updateCharacter(Long id, @Valid CharacterUpdateDto characterUpdateDto) {
         final CharacterDto existingCharacter = CharacterMapper.toDto(this.characterRepository.findById(id).orElseThrow(() -> new CharacterNotFoundException(id)));
 
-        if(existingCharacter.getTotalLevel() < characterUpdateDto.getTotalLevel()) {
+        if(characterUpdateDto.getTotalLevel() < existingCharacter.getTotalLevel()) {
             throw new ReducingCharacterLevelException(id);
         }
 
