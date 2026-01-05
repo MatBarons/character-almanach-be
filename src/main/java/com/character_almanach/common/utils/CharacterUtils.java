@@ -21,4 +21,15 @@ public class CharacterUtils {
         }
         return true;
     }
+
+    public static boolean checkClassRemoval(CharacterUpdateDto characterUpdateDto, CharacterDto existingCharacter) {
+        for (CharacterClassDto existingClass : existingCharacter.getClasses()) {
+            boolean classExistsInUpdate = characterUpdateDto.getClasses().stream()
+                .anyMatch(updatedClass -> updatedClass.getClassName().equals(existingClass.getClassName()));
+            if (!classExistsInUpdate) {
+                return false; // Class removal detected
+            }
+        }
+        return true; // No class removal
+    }
 }

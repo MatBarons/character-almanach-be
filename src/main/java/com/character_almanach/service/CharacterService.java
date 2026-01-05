@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.character_almanach.common.exception.character.CharacterNotFoundException;
+import com.character_almanach.common.exception.character.ClassRemovalNotAllowedException;
 import com.character_almanach.common.exception.character.ReducingCharacterLevelException;
 import com.character_almanach.common.exception.character.SubclassChangeNotAllowedException;
 import com.character_almanach.common.mappers.CharacterMapper;
@@ -42,12 +43,19 @@ public class CharacterService implements ICharacterService{
     @Override
     public CharacterDto updateCharacter(Long id, @Valid CharacterUpdateDto characterUpdateDto) {
         final CharacterDto existingCharacter = CharacterMapper.toDto(this.characterRepository.findById(id).orElseThrow(() -> new CharacterNotFoundException(id)));
+
         if(existingCharacter.getTotalLevel() < characterUpdateDto.getTotalLevel()) {
             throw new ReducingCharacterLevelException(id);
         }
+
+        if(!CharacterUtils.checkClassRemoval(characterUpdateDto, existingCharacter)) {
+            throw new ClassRemovalNotAllowedException(id);
+        }
+
         if(!CharacterUtils.checkSubClassValidity(characterUpdateDto, existingCharacter)) {
             throw new SubclassChangeNotAllowedException(id);
         }
-        return CharacterMapper.toDto(this.characterRepository.save(CharacterMapper.toEntity(characterUpdateDto)));
+
+        return CharacterMapper.toDto(this.characterRepository.save(CharacterMapper.toEntity(id,characterUpdateDto)));
     }
 }

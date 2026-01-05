@@ -39,7 +39,7 @@ public final class CharacterMapper {
         return character;
     }
 
-    public static Character toEntity(CharacterUpdateDto dto) {
+    public static Character toEntity(Long id,CharacterUpdateDto dto) {
 
         Character character = new Character(
             dto.getTotalLevel(),
