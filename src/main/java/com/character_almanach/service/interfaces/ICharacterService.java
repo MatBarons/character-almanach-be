@@ -11,4 +11,5 @@ public interface ICharacterService {
     CharacterDto getCharacter(Long id);
     CharacterDto createCharacter(CharacterCreateDto characterCreateDto);
     CharacterDto updateCharacter(Long id, CharacterUpdateDto characterCreateDto);
+    void deleteCharacter(Long id);
 }

@@ -86,14 +86,14 @@ public class CharacterControllerTest {
     void shouldSaveCharacter() throws Exception {
 
         CharacterCreateDto character = new CharacterCreateDto(
-                "Gandalf",
-                20,
-                "Human",
-                new StatsDto(18, 14, 16, 20, 18, 17),
-                List.of(
-                    new CharacterClassDto("Wizard", "School of Evocation", 20)
-                )
-            );
+            "Gandalf",
+            20,
+            "Human",
+            new StatsDto(18, 14, 16, 20, 18, 17),
+            List.of(
+                new CharacterClassDto("Wizard", "School of Evocation", 20)
+            )
+        );
 
         when(characterService.createCharacter(any(CharacterCreateDto.class))).thenReturn(
             new CharacterDto(
@@ -114,4 +114,222 @@ public class CharacterControllerTest {
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.name").value("Gandalf"));
     }
+
+    @Test
+    void shouldReturnValidationErrorForInvalidCharacterName() throws Exception {
+
+        final CharacterCreateDto characterWithEmptyName = new CharacterCreateDto(
+            "",
+            20,
+            "Elf",
+            new StatsDto(10, 10, 10, 10, 10, 10),
+            List.of(
+                new CharacterClassDto("Rogue", "Thief", 20)
+            )
+        );
+
+        when(characterService.createCharacter(any(CharacterCreateDto.class))).thenReturn(new CharacterDto(
+            4L,
+            "Gandalf",
+            20,
+            "Human",
+            List.of(
+                new CharacterClassDto("Wizard", "School of Evocation", 20)
+            ),
+            new StatsDto(18, 14, 16, 20, 18, 17)
+        ));
+
+        mockMvc.perform(
+            (post("/characters/new")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content((new ObjectMapper()).writeValueAsString(characterWithEmptyName)))
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnValidationErrorForInvalidCharacterLevel() throws Exception {
+
+        final CharacterCreateDto characterWithInvalidLevel = new CharacterCreateDto(
+            "Legolas",
+            0,
+            "Elf",
+            new StatsDto(10, 10, 10, 10, 10, 10),
+            List.of(
+                new CharacterClassDto("Rogue", "Thief", 0)
+            )
+        );
+
+        when(characterService.createCharacter(any(CharacterCreateDto.class))).thenReturn(new CharacterDto(
+            4L,
+            "Gandalf",
+            20,
+            "Human",
+            List.of(
+                new CharacterClassDto("Wizard", "School of Evocation", 20)
+            ),
+            new StatsDto(18, 14, 16, 20, 18, 17)
+        ));
+
+        mockMvc.perform(
+            (post("/characters/new")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content((new ObjectMapper()).writeValueAsString(characterWithInvalidLevel)))
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnValidationErrorForInvalidCharacterRace() throws Exception {
+
+        final CharacterCreateDto characterWithEmptyRace = new CharacterCreateDto(
+            "Legolas",
+            20,
+            "",
+            new StatsDto(10, 10, 10, 10, 10, 10),
+            List.of(
+                new CharacterClassDto("Rogue", "Thief", 20)
+            )
+        );
+
+        when(characterService.createCharacter(any(CharacterCreateDto.class))).thenReturn(new CharacterDto(
+            4L,
+            "Gandalf",
+            20,
+            "Human",
+            List.of(
+                new CharacterClassDto("Wizard", "School of Evocation", 20)
+            ),
+            new StatsDto(18, 14, 16, 20, 18, 17)
+        ));
+
+        mockMvc.perform(
+            (post("/characters/new")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content((new ObjectMapper()).writeValueAsString(characterWithEmptyRace)))
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnValidationErrorForInvalidCharacterLevelSum() throws Exception {
+
+        final CharacterCreateDto characterWithInvalidLevelSum = new CharacterCreateDto(
+            "Legolas",
+            20,
+            "Elf",
+            new StatsDto(10, 10, 10, 10, 10, 10),
+            List.of(
+                new CharacterClassDto("Rogue", "Thief", 10),
+                new CharacterClassDto("Archer", "Sniper", 15)
+            )
+        );
+
+        when(characterService.createCharacter(any(CharacterCreateDto.class))).thenReturn(new CharacterDto(
+            4L,
+            "Gandalf",
+            20,
+            "Human",
+            List.of(
+                new CharacterClassDto("Wizard", "School of Evocation", 20)
+            ),
+            new StatsDto(18, 14, 16, 20, 18, 17)
+        ));
+
+        mockMvc.perform(
+            (post("/characters/new")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content((new ObjectMapper()).writeValueAsString(characterWithInvalidLevelSum)))
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnValidationErrorForInvalidCharacterMultipleSameClass() throws Exception {
+
+        final CharacterCreateDto characterWithMultipleSameClass = new CharacterCreateDto(
+            "Legolas",
+            20,
+            "Elf",
+            new StatsDto(10, 10, 10, 10, 10, 10),
+            List.of(
+                new CharacterClassDto("Rogue", "Thief", 10),
+                new CharacterClassDto("Rogue", "Assassin", 10)
+            )
+        );
+
+        when(characterService.createCharacter(any(CharacterCreateDto.class))).thenReturn(new CharacterDto(
+            4L,
+            "Gandalf",
+            20,
+            "Human",
+            List.of(
+                new CharacterClassDto("Wizard", "School of Evocation", 20)
+            ),
+            new StatsDto(18, 14, 16, 20, 18, 17)
+        ));
+
+        mockMvc.perform(
+            (post("/characters/new")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content((new ObjectMapper()).writeValueAsString(characterWithMultipleSameClass)))
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnValidationErrorForInvalidStats() throws Exception {
+
+        final CharacterCreateDto characterWithInvalidStats = new CharacterCreateDto(
+            "Legolas",
+            20,
+            "Elf",
+            new StatsDto(0, 10, 10, 10, 10, 10),
+            List.of(
+                new CharacterClassDto("Rogue", "Thief", 20)
+            )
+        );
+
+        when(characterService.createCharacter(any(CharacterCreateDto.class))).thenReturn(new CharacterDto(
+            4L,
+            "Gandalf",
+            20,
+            "Human",
+            List.of(
+                new CharacterClassDto("Wizard", "School of Evocation", 20)
+            ),
+            new StatsDto(18, 14, 16, 20, 18, 17)
+        ));
+
+        mockMvc.perform(
+            (post("/characters/new")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content((new ObjectMapper()).writeValueAsString(characterWithInvalidStats)))
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnValidationErrorForNoCharacterClasses() throws Exception {
+
+        final CharacterCreateDto characterWithNoClasses = new CharacterCreateDto(
+            "Legolas",
+            20,
+            "Elf",
+            new StatsDto(10, 10, 10, 10, 10, 10),
+            List.of()
+        );
+
+        when(characterService.createCharacter(any(CharacterCreateDto.class))).thenReturn(new CharacterDto(
+            4L,
+            "Gandalf",
+            20,
+            "Human",
+            List.of(
+                new CharacterClassDto("Wizard", "School of Evocation", 20)
+            ),
+            new StatsDto(18, 14, 16, 20, 18, 17)
+        ));
+
+        mockMvc.perform(
+            (post("/characters/new")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content((new ObjectMapper()).writeValueAsString(characterWithNoClasses)))
+        ).andExpect(status().isBadRequest());
+    }
+
 }

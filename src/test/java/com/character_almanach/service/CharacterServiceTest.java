@@ -16,7 +16,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.character_almanach.model.CharacterClass;
 import com.character_almanach.model.Stats;
+import com.character_almanach.dto.get.CharacterClassDto;
+import com.character_almanach.dto.get.StatsDto;
+import com.character_almanach.dto.put.CharacterUpdateDto;
 import com.character_almanach.exception.character.CharacterNotFoundException;
+import com.character_almanach.exception.character.ClassRemovalNotAllowedException;
+import com.character_almanach.exception.character.ReducingCharacterLevelException;
+import com.character_almanach.exception.character.SubclassChangeNotAllowedException;
 import com.character_almanach.mappers.CharacterMapper;
 import com.character_almanach.model.Character;
 import com.character_almanach.repository.CharacterRepository;
@@ -28,6 +34,8 @@ public class CharacterServiceTest {
 
     @InjectMocks
     private CharacterService characterService;
+
+
 
     @Test
     void shouldReturnAllCharacters() {
@@ -72,6 +80,80 @@ public class CharacterServiceTest {
         assertThrows(
             CharacterNotFoundException.class,
             () -> characterService.getCharacter(999L)
+        );
+    }
+
+    @Test
+    void shouldThrowExceptionForLevelReduction() {
+
+        Stats stats = new Stats(16, 14, 15, 12, 10, 13);
+        Character character = new Character("Arthas", 5, "Human", stats);
+        character.addClass(new CharacterClass("Paladin", "Oath of the Ancients", 3));
+        character.addClass(new CharacterClass("Warrior", "Samurai", 2));
+
+        when(characterRepository.findById(1L)).thenReturn(Optional.of(character));
+
+        final CharacterUpdateDto updateDto = new CharacterUpdateDto(
+            2,
+            new StatsDto(16, 14, 15, 12, 10, 13),
+            List.of(
+                new CharacterClassDto("Paladin", "Oath of the Ancients", 1),
+                new CharacterClassDto("Warrior", "Battle Master", 1)
+            )
+        );
+        
+        assertThrows(
+            ReducingCharacterLevelException.class
+            , () -> characterService.updateCharacter(1L, updateDto)
+        );
+    }
+
+    @Test
+    void shouldThrowExceptionForClassRemoval() {
+
+        Stats stats = new Stats(16, 14, 15, 12, 10, 13);
+        Character character = new Character("Arthas", 5, "Human", stats);
+        character.addClass(new CharacterClass("Paladin", "Oath of the Ancients", 3));
+        character.addClass(new CharacterClass("Warrior", "Samurai", 2));
+
+        when(characterRepository.findById(1L)).thenReturn(Optional.of(character));
+        
+        final CharacterUpdateDto updateDto = new CharacterUpdateDto(
+            5,
+            new StatsDto(16, 14, 15, 12, 10, 13),
+            List.of(
+                new CharacterClassDto("Warrior", "Battle Master", 2)
+            )
+        );
+        
+        assertThrows(
+            ClassRemovalNotAllowedException.class
+            , () -> characterService.updateCharacter(1L, updateDto)
+        );
+    }
+
+    @Test
+    void shouldThrowExceptionForSubclassChange() {
+
+        Stats stats = new Stats(16, 14, 15, 12, 10, 13);
+        Character character = new Character("Arthas", 5, "Human", stats);
+        character.addClass(new CharacterClass("Paladin", "Oath of the Ancients", 3));
+        character.addClass(new CharacterClass("Warrior", "Samurai", 2));
+
+        when(characterRepository.findById(1L)).thenReturn(Optional.of(character));
+
+        final CharacterUpdateDto updateDto = new CharacterUpdateDto(
+            5,
+            new StatsDto(16, 14, 15, 12, 10, 13),
+            List.of(
+                new CharacterClassDto("Paladin", "Oath of Conquest", 3),
+                new CharacterClassDto("Warrior", "Battle Master", 2)
+            )
+        );
+        
+        assertThrows(
+            SubclassChangeNotAllowedException.class, 
+            () -> characterService.updateCharacter(1L, updateDto)
         );
     }
 }

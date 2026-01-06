@@ -72,7 +72,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneralException(Exception ex) {
         Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", "Internal server error");
+        errorResponse.put("Error", "Internal server error: " + ex.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

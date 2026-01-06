@@ -34,6 +34,7 @@ public class CharacterUpdateDto extends GenericCharacter<CharacterClassDto> {
 
     @Valid
     @NotEmpty
+    @NotNull
     private List<CharacterClassDto> classes;
 
     @Override

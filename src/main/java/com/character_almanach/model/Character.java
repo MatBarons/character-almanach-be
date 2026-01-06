@@ -17,13 +17,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "characters")
 @ValidTotalLevel
 @NoArgsConstructor
+@AllArgsConstructor
 public class Character extends GenericCharacter<CharacterClass> {
 
     @Getter
@@ -35,6 +38,7 @@ public class Character extends GenericCharacter<CharacterClass> {
     @Column(nullable = false, length = 50)
     private String name;
 
+    @Setter
     @Column(nullable = false)
     private int totalLevel;
 
@@ -42,10 +46,12 @@ public class Character extends GenericCharacter<CharacterClass> {
     @Column(nullable = false, length = 30)
     private String race;
 
+    @Setter
     @Getter
     @Embedded
     private Stats stats;
 
+    @Setter
     @OneToMany(
         mappedBy = "character",
         cascade = CascadeType.ALL,
@@ -57,11 +63,6 @@ public class Character extends GenericCharacter<CharacterClass> {
         this.name = name;
         this.totalLevel = totalLevel;
         this.race = race;
-        this.stats = stats;
-    }
-
-    public Character(int totalLevel, Stats stats) {
-        this.totalLevel = totalLevel;
         this.stats = stats;
     }
 

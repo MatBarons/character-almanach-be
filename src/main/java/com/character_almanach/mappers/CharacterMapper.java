@@ -1,4 +1,6 @@
 package com.character_almanach.mappers;
+import java.util.HashSet;
+
 import com.character_almanach.dto.create.CharacterCreateDto;
 import com.character_almanach.dto.get.CharacterDto;
 import com.character_almanach.dto.put.CharacterUpdateDto;
@@ -27,22 +29,6 @@ public final class CharacterMapper {
             dto.getName(),
             dto.getTotalLevel(),
             dto.getRace(),
-            StatsMapper.toEntity(dto.getStats())
-        );
-
-        dto.getClasses().forEach(classDto -> {
-            CharacterClass clazz =
-                CharacterClassMapper.toEntity(classDto);
-            character.addClass(clazz); 
-        });
-
-        return character;
-    }
-
-    public static Character toEntity(Long id,CharacterUpdateDto dto) {
-
-        Character character = new Character(
-            dto.getTotalLevel(),
             StatsMapper.toEntity(dto.getStats())
         );
 

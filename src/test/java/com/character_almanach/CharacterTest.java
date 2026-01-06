@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.character_almanach.dto.create.CharacterCreateDto;
 import com.character_almanach.dto.get.CharacterClassDto;
 import com.character_almanach.dto.get.StatsDto;
+import com.character_almanach.dto.put.CharacterUpdateDto;
 
 import tools.jackson.databind.ObjectMapper;
 
@@ -22,6 +23,7 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 
 @SpringBootTest
@@ -81,106 +83,30 @@ public class CharacterTest {
             .andExpect(jsonPath("$.name").value("Gandalf"));
     }
 
-    //TESTS FOR VALIDATIONS
     @Test
-    void shouldReturnValidationErrorForInvalidCharacterName() throws Exception {
-
-        final CharacterCreateDto characterWithEmptyName = new CharacterCreateDto(
-            "",
-            20,
-            "Elf",
-            new StatsDto(10, 10, 10, 10, 10, 10),
+    void shouldUpdateCharacter() throws Exception {
+       CharacterUpdateDto character = new CharacterUpdateDto(
+            19,
+            new StatsDto(19, 19, 19, 19, 19, 19),
             List.of(
-                new CharacterClassDto("Rogue", "Thief", 20)
+                new CharacterClassDto("Wizard", "School of Evocation", 19)
             )
         );
 
         mockMvc.perform(
-            (post("/characters/new")
+            (put("/characters/3")
             .contentType(MediaType.APPLICATION_JSON)
-            .content((new ObjectMapper()).writeValueAsString(characterWithEmptyName)))
-        ).andExpect(status().isBadRequest());
+            .content((new ObjectMapper()).writeValueAsString(character)))
+        ).andExpect(status().isAccepted());
+
+        mockMvc.perform(get("/characters/3"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.stats.strength").value(19))
+            .andExpect(jsonPath("$.stats.dexterity").value(19))
+            .andExpect(jsonPath("$.stats.constitution").value(19))
+            .andExpect(jsonPath("$.stats.intelligence").value(19))
+            .andExpect(jsonPath("$.stats.wisdom").value(19))
+            .andExpect(jsonPath("$.stats.charisma").value(19));
     }
-
-    @Test
-    void shouldReturnValidationErrorForInvalidCharacterLevel() throws Exception {
-
-        final CharacterCreateDto characterWithInvalidLevel = new CharacterCreateDto(
-            "Legolas",
-            0,
-            "Elf",
-            new StatsDto(10, 10, 10, 10, 10, 10),
-            List.of(
-                new CharacterClassDto("Rogue", "Thief", 0)
-            )
-        );
-
-        mockMvc.perform(
-            (post("/characters/new")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content((new ObjectMapper()).writeValueAsString(characterWithInvalidLevel)))
-        ).andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void shouldReturnValidationErrorForInvalidCharacterRace() throws Exception {
-
-        final CharacterCreateDto characterWithEmptyRace = new CharacterCreateDto(
-            "Legolas",
-            20,
-            "",
-            new StatsDto(10, 10, 10, 10, 10, 10),
-            List.of(
-                new CharacterClassDto("Rogue", "Thief", 20)
-            )
-        );
-
-        mockMvc.perform(
-            (post("/characters/new")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content((new ObjectMapper()).writeValueAsString(characterWithEmptyRace)))
-        ).andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void shouldReturnValidationErrorForInvalidCharacterLevelSum() throws Exception {
-
-        final CharacterCreateDto characterWithInvalidLevelSum = new CharacterCreateDto(
-            "Legolas",
-            20,
-            "Elf",
-            new StatsDto(10, 10, 10, 10, 10, 10),
-            List.of(
-                new CharacterClassDto("Rogue", "Thief", 10),
-                new CharacterClassDto("Archer", "Sniper", 15)
-            )
-        );
-
-        mockMvc.perform(
-            (post("/characters/new")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content((new ObjectMapper()).writeValueAsString(characterWithInvalidLevelSum)))
-        ).andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void shouldReturnValidationErrorForInvalidCharacterMultipleSameClass() throws Exception {
-
-        final CharacterCreateDto characterWithMultipleSameClass = new CharacterCreateDto(
-            "Legolas",
-            20,
-            "Elf",
-            new StatsDto(10, 10, 10, 10, 10, 10),
-            List.of(
-                new CharacterClassDto("Rogue", "Thief", 10),
-                new CharacterClassDto("Rogue", "Assassin", 10)
-            )
-        );
-
-        mockMvc.perform(
-            (post("/characters/new")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content((new ObjectMapper()).writeValueAsString(characterWithMultipleSameClass)))
-        ).andExpect(status().isBadRequest());
-    }
+    
 }
