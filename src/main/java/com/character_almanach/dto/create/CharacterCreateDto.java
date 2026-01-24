@@ -4,8 +4,8 @@ package com.character_almanach.dto.create;
 import com.character_almanach.annotation.multiple_same_class.ValidCharacterClasses;
 import com.character_almanach.annotation.total_level.ValidTotalLevel;
 import com.character_almanach.common.character.GenericCharacter;
-import com.character_almanach.dto.get.CharacterClassDto;
-import com.character_almanach.dto.get.StatsDto;
+import com.character_almanach.dto.get.character.CharacterClassDto;
+import com.character_almanach.dto.get.character.StatsDto;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

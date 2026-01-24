@@ -1,11 +1,9 @@
 package com.character_almanach.mappers;
-import java.util.HashSet;
 
 import com.character_almanach.dto.create.CharacterCreateDto;
-import com.character_almanach.dto.get.CharacterDto;
-import com.character_almanach.dto.put.CharacterUpdateDto;
-import com.character_almanach.model.Character;
-import com.character_almanach.model.CharacterClass;
+import com.character_almanach.dto.get.character.CharacterDto;
+import com.character_almanach.model.character.Character;
+import com.character_almanach.model.character.CharacterClass;
 
 
 public final class CharacterMapper {
@@ -33,9 +31,9 @@ public final class CharacterMapper {
         );
 
         dto.getClasses().forEach(classDto -> {
-            CharacterClass clazz =
+            CharacterClass c =
                 CharacterClassMapper.toEntity(classDto);
-            character.addClass(clazz); 
+            character.addClass(c); 
         });
 
         return character;

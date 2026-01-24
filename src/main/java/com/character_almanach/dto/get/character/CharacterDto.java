@@ -1,4 +1,4 @@
-package com.character_almanach.dto.get;
+package com.character_almanach.dto.get.character;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.character_almanach.helper;
 
-import com.character_almanach.dto.get.CharacterClassDto;
-import com.character_almanach.dto.get.CharacterDto;
+import com.character_almanach.dto.get.character.CharacterClassDto;
+import com.character_almanach.dto.get.character.CharacterDto;
 import com.character_almanach.dto.put.CharacterUpdateDto;
 
 public class CharacterHelper {
@@ -26,9 +26,9 @@ public class CharacterHelper {
             boolean classExistsInUpdate = characterUpdateDto.getClasses().stream()
                 .anyMatch(updatedClass -> updatedClass.getClassName().equals(existingClass.getClassName()));
             if (!classExistsInUpdate) {
-                return false; // Class removal detected
+                return false; 
             }
         }
-        return true; // No class removal
+        return true;
     }
 }

@@ -16,13 +16,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import com.character_almanach.dto.create.CharacterCreateDto;
-import com.character_almanach.dto.get.CharacterClassDto;
-import com.character_almanach.dto.get.CharacterDto;
-import com.character_almanach.dto.get.StatsDto;
+import com.character_almanach.dto.get.character.CharacterClassDto;
+import com.character_almanach.dto.get.character.CharacterDto;
+import com.character_almanach.dto.get.character.StatsDto;
 import com.character_almanach.mappers.CharacterMapper;
-import com.character_almanach.model.Character;
-import com.character_almanach.model.CharacterClass;
-import com.character_almanach.model.Stats;
+import com.character_almanach.model.character.Character;
+import com.character_almanach.model.character.CharacterClass;
+import com.character_almanach.model.character.Stats;
 import com.character_almanach.service.CharacterService;
 
 import tools.jackson.databind.ObjectMapper;

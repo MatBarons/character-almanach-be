@@ -14,17 +14,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.character_almanach.model.CharacterClass;
-import com.character_almanach.model.Stats;
-import com.character_almanach.dto.get.CharacterClassDto;
-import com.character_almanach.dto.get.StatsDto;
+import com.character_almanach.dto.get.character.CharacterClassDto;
+import com.character_almanach.dto.get.character.StatsDto;
 import com.character_almanach.dto.put.CharacterUpdateDto;
 import com.character_almanach.exception.character.CharacterNotFoundException;
 import com.character_almanach.exception.character.ClassRemovalNotAllowedException;
 import com.character_almanach.exception.character.ReducingCharacterLevelException;
 import com.character_almanach.exception.character.SubclassChangeNotAllowedException;
 import com.character_almanach.mappers.CharacterMapper;
-import com.character_almanach.model.Character;
+import com.character_almanach.model.character.Character;
+import com.character_almanach.model.character.CharacterClass;
+import com.character_almanach.model.character.Stats;
 import com.character_almanach.repository.CharacterRepository;
 
 @ExtendWith(MockitoExtension.class)

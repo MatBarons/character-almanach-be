@@ -1,7 +1,7 @@
 package com.character_almanach.mappers;
 
-import com.character_almanach.dto.get.StatsDto;
-import com.character_almanach.model.Stats;
+import com.character_almanach.dto.get.character.StatsDto;
+import com.character_almanach.model.character.Stats;
 
 public final class StatsMapper {
 

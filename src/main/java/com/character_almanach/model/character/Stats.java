@@ -1,4 +1,4 @@
-package com.character_almanach.model;
+package com.character_almanach.model.character;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

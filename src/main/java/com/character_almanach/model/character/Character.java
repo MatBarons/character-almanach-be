@@ -1,4 +1,4 @@
-package com.character_almanach.model;
+package com.character_almanach.model.character;
 
 import java.util.HashSet;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.Set;
 import com.character_almanach.annotation.total_level.ValidTotalLevel;
 import com.character_almanach.common.character.GenericCharacter;
 import com.character_almanach.exception.character.CharacterDuplicateClassesException;
+import com.character_almanach.model.user.User;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -15,6 +16,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -58,6 +61,12 @@ public class Character extends GenericCharacter<CharacterClass> {
         orphanRemoval = true
     )
     private Set<CharacterClass> classes = new HashSet<>();
+
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+    
 
     public Character(String name, int totalLevel, String race, Stats stats) {
         this.name = name;

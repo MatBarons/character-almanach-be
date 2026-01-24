@@ -1,7 +1,7 @@
 package com.character_almanach.mappers;
 
-import com.character_almanach.dto.get.CharacterClassDto;
-import com.character_almanach.model.CharacterClass;
+import com.character_almanach.dto.get.character.CharacterClassDto;
+import com.character_almanach.model.character.CharacterClass;
 
 public final class CharacterClassMapper {
 

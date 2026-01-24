@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import com.character_almanach.model.CharacterClass;
-import com.character_almanach.model.Stats;
-import com.character_almanach.model.Character;
+import com.character_almanach.model.character.Character;
+import com.character_almanach.model.character.CharacterClass;
+import com.character_almanach.model.character.Stats;
 import com.character_almanach.repository.CharacterRepository;
 
 @Component

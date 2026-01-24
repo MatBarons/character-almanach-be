@@ -5,8 +5,8 @@ import java.util.List;
 import com.character_almanach.annotation.multiple_same_class.ValidCharacterClasses;
 import com.character_almanach.annotation.total_level.ValidTotalLevel;
 import com.character_almanach.common.character.GenericCharacter;
-import com.character_almanach.dto.get.CharacterClassDto;
-import com.character_almanach.dto.get.StatsDto;
+import com.character_almanach.dto.get.character.CharacterClassDto;
+import com.character_almanach.dto.get.character.StatsDto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;

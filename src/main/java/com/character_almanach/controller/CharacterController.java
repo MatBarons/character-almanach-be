@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import com.character_almanach.dto.create.CharacterCreateDto;
-import com.character_almanach.dto.get.CharacterDto;
+import com.character_almanach.dto.get.character.CharacterDto;
 import com.character_almanach.dto.put.CharacterUpdateDto;
 import com.character_almanach.service.CharacterService;
 
@@ -30,6 +30,12 @@ public class CharacterController {
     @GetMapping("/all")
     public List<CharacterDto> getAllCharacters(){
         return this.characterService.getAllCharacters();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/all/{userId}")
+    public List<CharacterDto> getAllCharactersByUserId(@PathVariable Long userId){
+        return this.characterService.getAllCharactersByUserId(userId);
     }
 
     @ResponseStatus(HttpStatus.OK)

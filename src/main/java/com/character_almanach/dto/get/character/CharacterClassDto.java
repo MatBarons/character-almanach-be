@@ -1,4 +1,4 @@
-package com.character_almanach.dto.get;
+package com.character_almanach.dto.get.character;
 
 import com.character_almanach.common.character.GenericClasses;
 

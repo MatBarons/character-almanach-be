@@ -10,8 +10,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.character_almanach.dto.create.CharacterCreateDto;
-import com.character_almanach.dto.get.CharacterClassDto;
-import com.character_almanach.dto.get.StatsDto;
+import com.character_almanach.dto.get.character.CharacterClassDto;
+import com.character_almanach.dto.get.character.StatsDto;
 import com.character_almanach.dto.put.CharacterUpdateDto;
 
 import tools.jackson.databind.ObjectMapper;

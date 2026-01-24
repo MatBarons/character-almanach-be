@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.Valid;
 
 import com.character_almanach.dto.create.CharacterCreateDto;
-import com.character_almanach.dto.get.CharacterDto;
+import com.character_almanach.dto.get.character.CharacterDto;
 import com.character_almanach.dto.put.CharacterUpdateDto;
 import com.character_almanach.exception.character.CharacterNotFoundException;
 import com.character_almanach.exception.character.ClassRemovalNotAllowedException;
@@ -19,10 +19,10 @@ import com.character_almanach.helper.CharacterHelper;
 import com.character_almanach.mappers.CharacterClassMapper;
 import com.character_almanach.mappers.CharacterMapper;
 import com.character_almanach.mappers.StatsMapper;
+import com.character_almanach.model.character.Character;
+import com.character_almanach.model.character.CharacterClass;
 import com.character_almanach.repository.CharacterRepository;
 import com.character_almanach.service.interfaces.ICharacterService;
-import com.character_almanach.model.Character;
-import com.character_almanach.model.CharacterClass;
 
 @Service
 @Transactional
@@ -33,6 +33,11 @@ public class CharacterService implements ICharacterService{
     @Override
     public List<CharacterDto> getAllCharacters(){
         return this.characterRepository.findAll().stream().map(CharacterMapper::toDto).toList();
+    }
+
+    @Override
+    public List<CharacterDto> getAllCharactersByUserId(Long userId){
+        return this.characterRepository.findByUserId(userId).stream().map(CharacterMapper::toDto).toList();
     }
 
     @Override

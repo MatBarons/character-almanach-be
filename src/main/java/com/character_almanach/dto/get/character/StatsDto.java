@@ -1,4 +1,4 @@
-package com.character_almanach.dto.get;
+package com.character_almanach.dto.get.character;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
