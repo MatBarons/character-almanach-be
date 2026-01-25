@@ -17,8 +17,8 @@ import com.character_almanach.service.UserService;
 
 
 @RestController
-@RequestMapping("/users")
-public class UserController {  
+@RequestMapping("/auth")
+public class AuthController {  
 
     @Autowired
     private UserService userService;
