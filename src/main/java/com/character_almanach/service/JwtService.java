@@ -1,5 +1,7 @@
 package com.character_almanach.service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -27,7 +29,7 @@ public class JwtService {
             .subject(userDetails.getUsername())
             .claim("roles", userDetails.getAuthorities().iterator().next().getAuthority())
             .issuedAt(new Date())
-            .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
+            .expiration(Date.from(Instant.now().plus(15, ChronoUnit.MINUTES)))
             .signWith(getSecretKey())
             .compact();
     }
