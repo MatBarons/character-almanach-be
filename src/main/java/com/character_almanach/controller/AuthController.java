@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +17,7 @@ import com.character_almanach.dto.create.UserRegisterDto;
 import com.character_almanach.dto.get.user.UserLoginDto;
 import com.character_almanach.dto.get.user.UserLoginResponseDto;
 import com.character_almanach.model.user.CustomUserDetails;
-import com.character_almanach.model.user.RefreshToken;
+import com.character_almanach.model.user.User;
 import com.character_almanach.service.JwtService;
 import com.character_almanach.service.RefreshTokenService;
 import com.character_almanach.service.UserService;
@@ -33,6 +34,8 @@ public class AuthController {
     private JwtService jwtService;
     @Autowired
     private RefreshTokenService refreshTokenService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
@@ -55,7 +58,9 @@ public class AuthController {
     }
     
     @GetMapping("/refresh-token")
-    public String refreshToken() {
-        return "Token refreshed";
+    public UserLoginResponseDto refreshToken(@RequestParam String token) {
+        User user = refreshTokenService.verifyAndGet(token).getUser();
+        String accessToken = jwtService.generateToken(new CustomUserDetails(user));
+        return new UserLoginResponseDto(accessToken,token);
     }
 }

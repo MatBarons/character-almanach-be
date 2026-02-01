@@ -1,7 +1,7 @@
 package com.character_almanach.model.user;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.character_almanach.model.character.Character;
 
@@ -48,5 +48,5 @@ public class User {
         mappedBy = "user", 
         orphanRemoval = true,
         cascade = CascadeType.ALL)
-    private Set<Character> characters = new HashSet<>();
+    private List<Character> characters = new ArrayList<Character>();
 }

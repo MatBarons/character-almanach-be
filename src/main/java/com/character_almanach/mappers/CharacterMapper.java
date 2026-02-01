@@ -38,4 +38,22 @@ public final class CharacterMapper {
 
         return character;
     }
+
+    public static Character toEntity(CharacterDto dto){
+        Character character = new Character(
+            dto.getId(),
+            dto.getName(),
+            dto.getTotalLevel(),
+            dto.getRace(),
+            StatsMapper.toEntity(dto.getStats())
+        );
+
+        dto.getClasses().forEach(classDto -> {
+            CharacterClass c =
+                CharacterClassMapper.toEntity(classDto);
+            character.addClass(c); 
+        });
+
+        return character;
+    }
 }

@@ -75,6 +75,14 @@ public class Character extends GenericCharacter<CharacterClass> {
         this.stats = stats;
     }
 
+    public Character(Long id,String name, int totalLevel, String race, Stats stats){
+        this.id = id;
+        this.name = name;
+        this.totalLevel = totalLevel;
+        this.race = race;
+        this.stats = stats;
+    }
+
     public void addClass(CharacterClass c) {
         final boolean res = classes.add(c);
         if(!res){
