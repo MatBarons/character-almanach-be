@@ -22,7 +22,7 @@ import com.character_almanach.exception.character.ClassRemovalNotAllowedExceptio
 import com.character_almanach.exception.character.ReducingCharacterLevelException;
 import com.character_almanach.exception.character.SubclassChangeNotAllowedException;
 import com.character_almanach.mappers.CharacterMapper;
-import com.character_almanach.model.character.Character;
+import com.character_almanach.model.character.GameCharacter;
 import com.character_almanach.model.character.CharacterClass;
 import com.character_almanach.model.character.Stats;
 import com.character_almanach.repository.CharacterRepository;
@@ -40,16 +40,16 @@ public class CharacterServiceTest {
     @Test
     void shouldReturnAllCharacters() {
         Stats stats1 = new Stats(16, 14, 15, 12, 10, 13);
-        Character character1 = new Character("Arthas", 5, "Human", stats1);
+        GameCharacter character1 = new GameCharacter("Arthas", 5, "Human", stats1);
         character1.addClass(new CharacterClass("Paladin", "Oath of the Ancients", 3));
         character1.addClass(new CharacterClass("Warrior", "Samurai", 2));
 
         Stats stats2 = new Stats(10, 18, 12, 14, 13, 8);
-        Character character2 = new Character("Lyra", 4, "Elf", stats2);
+        GameCharacter character2 = new GameCharacter("Lyra", 4, "Elf", stats2);
         character2.addClass(new CharacterClass("Rogue", "Thief", 4));
 
         Stats stats3 = new Stats(8, 12, 10, 18, 16, 14);
-        Character character3 = new Character("Merlin", 7, "Human", stats3);
+        GameCharacter character3 = new GameCharacter("Merlin", 7, "Human", stats3);
         character3.addClass(new CharacterClass("Wizard", "School of Evocation", 7));
         when(characterRepository.findAll()).thenReturn(List.of(character1, character2, character3));
 
@@ -63,7 +63,7 @@ public class CharacterServiceTest {
     @Test
     void shouldReturnCharacterById() {
         Stats stats = new Stats(16, 14, 15, 12, 10, 13);
-        Character character = new Character("Arthas", 5, "Human", stats);
+        GameCharacter character = new GameCharacter("Arthas", 5, "Human", stats);
         character.addClass(new CharacterClass("Paladin", "Oath of the Ancients", 3));
         character.addClass(new CharacterClass("Warrior", "Samurai", 2));
 
@@ -87,7 +87,7 @@ public class CharacterServiceTest {
     void shouldThrowExceptionForLevelReduction() {
 
         Stats stats = new Stats(16, 14, 15, 12, 10, 13);
-        Character character = new Character("Arthas", 5, "Human", stats);
+        GameCharacter character = new GameCharacter("Arthas", 5, "Human", stats);
         character.addClass(new CharacterClass("Paladin", "Oath of the Ancients", 3));
         character.addClass(new CharacterClass("Warrior", "Samurai", 2));
 
@@ -112,7 +112,7 @@ public class CharacterServiceTest {
     void shouldThrowExceptionForClassRemoval() {
 
         Stats stats = new Stats(16, 14, 15, 12, 10, 13);
-        Character character = new Character("Arthas", 5, "Human", stats);
+        GameCharacter character = new GameCharacter("Arthas", 5, "Human", stats);
         character.addClass(new CharacterClass("Paladin", "Oath of the Ancients", 3));
         character.addClass(new CharacterClass("Warrior", "Samurai", 2));
 
@@ -136,7 +136,7 @@ public class CharacterServiceTest {
     void shouldThrowExceptionForSubclassChange() {
 
         Stats stats = new Stats(16, 14, 15, 12, 10, 13);
-        Character character = new Character("Arthas", 5, "Human", stats);
+        GameCharacter character = new GameCharacter("Arthas", 5, "Human", stats);
         character.addClass(new CharacterClass("Paladin", "Oath of the Ancients", 3));
         character.addClass(new CharacterClass("Warrior", "Samurai", 2));
 

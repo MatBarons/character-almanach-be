@@ -6,14 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.character_almanach.model.character.Character;
+import com.character_almanach.model.character.GameCharacter;
 
 @Repository
-public interface CharacterRepository extends JpaRepository<Character,Long>{
-    public List<Character> findAll();
-    @Query("SELECT c FROM Character c WHERE c.user.id = ?1")
-    public List<Character> findByUserId(Long userId);
-    public Optional<Character> findById(Long id);
-    public Character save(Character character);
+public interface CharacterRepository extends JpaRepository<GameCharacter,Long>{
+    public List<GameCharacter> findAll();
+    @Query("SELECT c FROM GameCharacter c WHERE c.user.id = ?1")
+    public List<GameCharacter> findByUserId(Long userId);
+    public Optional<GameCharacter> findById(Long id);
+    public GameCharacter save(GameCharacter character);
     public void deleteById(Long id);
 }

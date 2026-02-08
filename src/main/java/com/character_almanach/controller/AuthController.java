@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.character_almanach.dto.create.UserRegisterDto;
-import com.character_almanach.dto.get.user.UserDto;
 import com.character_almanach.dto.get.user.UserLoginDto;
 import com.character_almanach.dto.get.user.UserLoginResponseDto;
 import com.character_almanach.model.user.CustomUserDetails;

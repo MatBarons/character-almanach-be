@@ -37,7 +37,7 @@ public class CharacterClass extends GenericClasses{
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "character_id", nullable = false)
-    private Character character;
+    private GameCharacter character;
 
     public CharacterClass(String className, String subclassName, int level) {
         this.className = className;

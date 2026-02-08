@@ -3,7 +3,7 @@ package com.character_almanach.model.user;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.character_almanach.model.character.Character;
+import com.character_almanach.model.character.GameCharacter;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -48,5 +48,5 @@ public class User {
         mappedBy = "user", 
         orphanRemoval = true,
         cascade = CascadeType.ALL)
-    private List<Character> characters = new ArrayList<Character>();
+    private List<GameCharacter> characters = new ArrayList<GameCharacter>();
 }

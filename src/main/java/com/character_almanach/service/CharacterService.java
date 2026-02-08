@@ -19,7 +19,7 @@ import com.character_almanach.helper.CharacterHelper;
 import com.character_almanach.mappers.CharacterClassMapper;
 import com.character_almanach.mappers.CharacterMapper;
 import com.character_almanach.mappers.StatsMapper;
-import com.character_almanach.model.character.Character;
+import com.character_almanach.model.character.GameCharacter;
 import com.character_almanach.model.character.CharacterClass;
 import com.character_almanach.repository.CharacterRepository;
 import com.character_almanach.service.interfaces.ICharacterService;
@@ -52,7 +52,7 @@ public class CharacterService implements ICharacterService{
 
     @Override
     public CharacterDto updateCharacter(Long id, @Valid CharacterUpdateDto characterUpdateDto) {
-        final Character existingCharacter = this.characterRepository.findById(id).orElseThrow(() -> new CharacterNotFoundException(id));
+        final GameCharacter existingCharacter = this.characterRepository.findById(id).orElseThrow(() -> new CharacterNotFoundException(id));
 
         final CharacterDto existingCharacterDto = CharacterMapper.toDto(existingCharacter);
 

@@ -2,14 +2,14 @@ package com.character_almanach.mappers;
 
 import com.character_almanach.dto.create.CharacterCreateDto;
 import com.character_almanach.dto.get.character.CharacterDto;
-import com.character_almanach.model.character.Character;
 import com.character_almanach.model.character.CharacterClass;
+import com.character_almanach.model.character.GameCharacter;
 
 
 public final class CharacterMapper {
 
 
-    public static CharacterDto toDto(Character entity) {
+    public static CharacterDto toDto(GameCharacter entity) {
         return new CharacterDto(
             entity.getId(),
             entity.getName(),
@@ -21,9 +21,9 @@ public final class CharacterMapper {
     }
 
     //for the create - POST
-    public static Character toEntity(CharacterCreateDto dto) {
+    public static GameCharacter toEntity(CharacterCreateDto dto) {
 
-        Character character = new Character(
+        GameCharacter character = new GameCharacter(
             dto.getName(),
             dto.getTotalLevel(),
             dto.getRace(),
@@ -39,8 +39,8 @@ public final class CharacterMapper {
         return character;
     }
 
-    public static Character toEntity(CharacterDto dto){
-        Character character = new Character(
+    public static GameCharacter toEntity(CharacterDto dto){
+        GameCharacter character = new GameCharacter(
             dto.getId(),
             dto.getName(),
             dto.getTotalLevel(),

@@ -30,7 +30,7 @@ import lombok.Setter;
 @ValidTotalLevel
 @NoArgsConstructor
 @AllArgsConstructor
-public class Character extends GenericCharacter<CharacterClass> {
+public class GameCharacter extends GenericCharacter<CharacterClass> {
 
     @Getter
     @Id
@@ -68,14 +68,14 @@ public class Character extends GenericCharacter<CharacterClass> {
     private User user;
     
 
-    public Character(String name, int totalLevel, String race, Stats stats) {
+    public GameCharacter(String name, int totalLevel, String race, Stats stats) {
         this.name = name;
         this.totalLevel = totalLevel;
         this.race = race;
         this.stats = stats;
     }
 
-    public Character(Long id,String name, int totalLevel, String race, Stats stats){
+    public GameCharacter(Long id,String name, int totalLevel, String race, Stats stats){
         this.id = id;
         this.name = name;
         this.totalLevel = totalLevel;
