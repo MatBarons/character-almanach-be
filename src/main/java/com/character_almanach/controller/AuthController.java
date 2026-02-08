@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.character_almanach.dto.create.UserRegisterDto;
+import com.character_almanach.dto.get.user.UserDto;
 import com.character_almanach.dto.get.user.UserLoginDto;
 import com.character_almanach.dto.get.user.UserLoginResponseDto;
 import com.character_almanach.model.user.CustomUserDetails;
@@ -48,7 +49,7 @@ public class AuthController {
         );
         CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
         String token = jwtService.generateToken(userDetails);
-        return new UserLoginResponseDto(token,refreshTokenService.createRefreshToken(userDetails.getDomainUser()));
+        return new UserLoginResponseDto(token,refreshTokenService.createRefreshToken(userDetails.getDomainUser()),userDetails.getId());
     }
 
     @PostMapping("/register")
@@ -61,6 +62,6 @@ public class AuthController {
     public UserLoginResponseDto refreshToken(@RequestParam String token) {
         User user = refreshTokenService.verifyAndGet(token).getUser();
         String accessToken = jwtService.generateToken(new CustomUserDetails(user));
-        return new UserLoginResponseDto(accessToken,token);
+        return new UserLoginResponseDto(accessToken,token,user.getId());
     }
 }
