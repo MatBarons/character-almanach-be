@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.character_almanach.dto.create.UserRegisterDto;
+import com.character_almanach.dto.get.user.UserDto;
 import com.character_almanach.dto.get.user.UserLoginDto;
 import com.character_almanach.dto.get.user.UserLoginResponseDto;
 import com.character_almanach.model.user.CustomUserDetails;
 import com.character_almanach.model.user.User;
+import com.character_almanach.service.CustomUserDetailsService;
 import com.character_almanach.service.JwtService;
 import com.character_almanach.service.RefreshTokenService;
 import com.character_almanach.service.UserService;
@@ -36,6 +38,8 @@ public class AuthController {
     private RefreshTokenService refreshTokenService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
@@ -48,14 +52,27 @@ public class AuthController {
         );
         CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
         String token = jwtService.generateToken(userDetails);
-        return new UserLoginResponseDto(token,refreshTokenService.createRefreshToken(userDetails.getDomainUser()),userDetails.getId());
+        return new UserLoginResponseDto(
+            token,
+            refreshTokenService.createRefreshToken(userDetails.getDomainUser()),
+            userDetails.getId()
+        );
     }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public String register(@RequestBody UserRegisterDto user) {
-        return this.userService.register(user);
+    public UserLoginResponseDto register(@RequestBody UserRegisterDto user) {
+        UserDto userDto = this.userService.register(user);
+        CustomUserDetails userDetails = userDetailsService.loadUserByUsername(userDto.getUsername());
+
+        String token = jwtService.generateToken(userDetails);
+        return new UserLoginResponseDto(
+            token,
+            refreshTokenService.createRefreshToken(userDetails.getDomainUser()),
+            userDetails.getId()
+        );
     }
+
     
     @GetMapping("/refresh-token")
     public UserLoginResponseDto refreshToken(@RequestParam String token) {

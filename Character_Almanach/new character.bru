@@ -1,0 +1,43 @@
+meta {
+  name: new character
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8080/characters/new
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNYXRCYXJvbnMiLCJyb2xlcyI6IlVTRVIiLCJpYXQiOjE3NzA1ODYzNzksImV4cCI6MTc3MDU4NzI3OX0.ISSNxKrQZRXJ3txvN2RNVi-lYIc8Hsz9qudVgiWTNXQ
+}
+
+body:json {
+  {
+    "name": "Arthas",
+    "totalLevel": 10,
+    "race": "Human",
+    "stats": {
+      "strength": 18,
+      "dexterity": 14,
+      "constitution": 16,
+      "intelligence": 12,
+      "wisdom": 10,
+      "charisma": 15
+    },
+    "classes": [
+      {
+        "className": "Paladin",
+        "subclassName": "Oath of Devotion",
+        "level": 6
+      },
+      {
+        "className": "Fighter",
+        "subclassName": "Champion",
+        "level": 4
+      }
+    ]
+  }
+}

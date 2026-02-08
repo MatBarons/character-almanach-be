@@ -1,7 +1,9 @@
 package com.character_almanach.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,17 +16,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.character_almanach.filter.JwtAuthFilter;
 
-import lombok.AllArgsConstructor;
-
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
 public class SecurityConfiguration {
 
-    private final JwtAuthFilter jwtAuthenticationFilter;
-    private final AuthenticationProvider authenticationProvider;
+    @Autowired
+    private AuthenticationProvider authenticationProvider;
+    @Autowired
     private AuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @Autowired
     private AccessDeniedHandler jwtAccessDeniedHandler;
+
+    @Bean
+    public JwtAuthFilter jwtAuthenticationFilter() {
+        return new JwtAuthFilter();
+    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -37,10 +43,11 @@ public class SecurityConfiguration {
             )
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(
-                jwtAuthenticationFilter,
+                jwtAuthenticationFilter(),
                 UsernamePasswordAuthenticationFilter.class
             )
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
             );

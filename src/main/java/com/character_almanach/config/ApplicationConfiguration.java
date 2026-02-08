@@ -14,20 +14,13 @@ import com.character_almanach.service.CustomUserDetailsService;
 @Configuration
 public class ApplicationConfiguration {
 
-    private final CustomUserDetailsService userDetailsService;
-
-    public ApplicationConfiguration(CustomUserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-        //PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
-    AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder) {
+    AuthenticationProvider authenticationProvider(CustomUserDetailsService userDetailsService,PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;

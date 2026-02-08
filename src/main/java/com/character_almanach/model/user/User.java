@@ -38,6 +38,7 @@ public class User {
     private String username;
 
     @Column(nullable = false)
+    @Setter
     private String password;
 
     @Enumerated(EnumType.STRING)

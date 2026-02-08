@@ -26,10 +26,10 @@ public class JwtService {
     public String generateToken(CustomUserDetails userDetails) {
 
         return Jwts.builder()
-            .subject(userDetails.getUsername())
+            .setSubject(userDetails.getUsername())
             .claim("roles", userDetails.getAuthorities().iterator().next().getAuthority())
-            .issuedAt(new Date())
-            .expiration(Date.from(Instant.now().plus(15, ChronoUnit.MINUTES)))
+            .setIssuedAt(new Date())
+            .setExpiration(Date.from(Instant.now().plus(15, ChronoUnit.MINUTES)))
             .signWith(getSecretKey())
             .compact();
     }
@@ -61,11 +61,11 @@ public class JwtService {
 
     private Claims extractPayload(String token){
 
-        return Jwts.parser()
-            .verifyWith(getSecretKey())
+        return Jwts.parserBuilder()
+            .setSigningKey(getSecretKey())
             .build()
-            .parseSignedClaims(token)
-            .getPayload();
+            .parseClaimsJws(token)
+            .getBody();
     }
 
     private SecretKey getSecretKey(){

@@ -4,25 +4,27 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
 import com.character_almanach.mappers.RefreshTokenMapper;
 import com.character_almanach.model.user.RefreshToken;
 import com.character_almanach.model.user.User;
 import com.character_almanach.repository.RefreshTokenRepository;
 
-import lombok.AllArgsConstructor;
-
 @Service
-@AllArgsConstructor
 public class RefreshTokenService {
 
-    private final RefreshTokenRepository repository;
+    @Autowired
+    private RefreshTokenRepository repository;
 
     private static final Duration REFRESH_TOKEN_TTL = Duration.ofDays(7);
 
+    @Transactional
     public String createRefreshToken(User user) {
         repository.deleteByUser(user);
+        repository.flush(); 
 
         RefreshToken token = new RefreshToken();
         token.setUser(user);

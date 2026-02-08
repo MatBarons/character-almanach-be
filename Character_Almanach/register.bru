@@ -1,0 +1,19 @@
+meta {
+  name: register
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8080/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "MatBarons",
+    "email": "matteo.barone3@gmail.com",
+    "password": "CICCIO33a1!1"
+  }
+}
