@@ -16,9 +16,12 @@ import com.character_almanach.exception.character.CharacterNotFoundException;
 import com.character_almanach.exception.character.ClassRemovalNotAllowedException;
 import com.character_almanach.exception.character.ReducingCharacterLevelException;
 import com.character_almanach.exception.character.SubclassChangeNotAllowedException;
+import com.character_almanach.exception.user.UserAlreadyExistsException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    //Character Exceptions
 
     @ExceptionHandler(CharacterNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleResourceNotFound(CharacterNotFoundException ex) {
@@ -54,6 +57,15 @@ public class GlobalExceptionHandler {
         errorResponse.put("error", ex.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    //User Exceptions
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> handleUserAlreadyExists(UserAlreadyExistsException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    } 
 
     //THIS HANDLER IS ADDED TO HANDLE VALIDATION ERRORS
     @ExceptionHandler(MethodArgumentNotValidException.class)
