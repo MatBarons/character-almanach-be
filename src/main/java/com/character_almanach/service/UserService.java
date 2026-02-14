@@ -45,14 +45,6 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Long getUserId(){
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByUsername(username).orElseThrow(
-            () -> new UserNotFoundException(username)
-        ).getId();
-    }
-
-    @Override
     public UserDto refresh(UserLoginDto user){
         return UserMapper.toDto(userRepository.findByUsername(user.getUsername()).orElseThrow(
             () -> new UserNotFoundException(user.getUsername())

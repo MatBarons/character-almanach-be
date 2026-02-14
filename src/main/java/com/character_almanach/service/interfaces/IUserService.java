@@ -8,5 +8,4 @@ public interface IUserService {
     UserDto register(UserRegisterDto user);
     UserDto refresh(UserLoginDto user);
     UserDto getUser(Long id);
-    Long getUserId();
 }

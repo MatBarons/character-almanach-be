@@ -19,7 +19,6 @@ import com.character_almanach.dto.get.character.CharacterDto;
 import com.character_almanach.dto.put.CharacterUpdateDto;
 import com.character_almanach.model.user.CustomUserDetails;
 import com.character_almanach.service.CharacterService;
-import com.character_almanach.service.UserService;
 
 import jakarta.validation.Valid;
 
@@ -28,8 +27,6 @@ import jakarta.validation.Valid;
 public class CharacterController {
     @Autowired
     private CharacterService characterService;
-    @Autowired
-    private UserService userService;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/")
@@ -39,8 +36,8 @@ public class CharacterController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    public List<CharacterDto> getAllCharactersByUserId(){
-        return this.characterService.getAllCharactersByUserId(userService.getUserId());
+    public List<CharacterDto> getAllCharactersByUserId(@AuthenticationPrincipal CustomUserDetails userDetails){
+        return this.characterService.getAllCharactersByUserId(userDetails.getId());
     }
 
     @ResponseStatus(HttpStatus.OK)
