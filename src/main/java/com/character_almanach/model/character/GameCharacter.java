@@ -63,6 +63,7 @@ public class GameCharacter extends GenericCharacter<CharacterClass> {
     private Set<CharacterClass> classes = new HashSet<>();
 
     @Setter
+    @Getter
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

@@ -69,7 +69,7 @@ public class CharacterServiceTest {
 
         when(characterRepository.findById(1L)).thenReturn(Optional.of(character));
 
-        assertEquals(characterService.getCharacter(1L), CharacterMapper.toDto(character));
+        assertEquals(characterService.getCharacter(1L, 1L), CharacterMapper.toDto(character));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class CharacterServiceTest {
 
         assertThrows(
             CharacterNotFoundException.class,
-            () -> characterService.getCharacter(999L)
+            () -> characterService.getCharacter(999L,1L)
         );
     }
 
@@ -104,7 +104,7 @@ public class CharacterServiceTest {
         
         assertThrows(
             ReducingCharacterLevelException.class
-            , () -> characterService.updateCharacter(1L, updateDto)
+            , () -> characterService.updateCharacter(1L, updateDto, 1L)
         );
     }
 
@@ -128,7 +128,7 @@ public class CharacterServiceTest {
         
         assertThrows(
             ClassRemovalNotAllowedException.class
-            , () -> characterService.updateCharacter(1L, updateDto)
+            , () -> characterService.updateCharacter(1L, updateDto, 1L)
         );
     }
 
@@ -153,7 +153,7 @@ public class CharacterServiceTest {
         
         assertThrows(
             SubclassChangeNotAllowedException.class, 
-            () -> characterService.updateCharacter(1L, updateDto)
+            () -> characterService.updateCharacter(1L, updateDto, 1L)
         );
     }
 }

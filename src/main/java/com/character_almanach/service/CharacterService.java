@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.Valid;
@@ -20,8 +23,10 @@ import com.character_almanach.mappers.CharacterClassMapper;
 import com.character_almanach.mappers.CharacterMapper;
 import com.character_almanach.mappers.StatsMapper;
 import com.character_almanach.model.character.GameCharacter;
+import com.character_almanach.model.user.User;
 import com.character_almanach.model.character.CharacterClass;
 import com.character_almanach.repository.CharacterRepository;
+import com.character_almanach.repository.UserRepository;
 import com.character_almanach.service.interfaces.ICharacterService;
 
 @Service
@@ -29,6 +34,8 @@ import com.character_almanach.service.interfaces.ICharacterService;
 public class CharacterService implements ICharacterService{
     @Autowired
     private CharacterRepository characterRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<CharacterDto> getAllCharacters(){
@@ -41,19 +48,24 @@ public class CharacterService implements ICharacterService{
     }
 
     @Override
-    public CharacterDto getCharacter(Long id){
+    @PreAuthorize("@characterSecurity.isOwner(#userId)")
+    public CharacterDto getCharacter(Long id, Long userId){
         return CharacterMapper.toDto(this.characterRepository.findById(id).orElseThrow(() -> new CharacterNotFoundException(id)));
     }
     
     @Override
     public CharacterDto createCharacter(@Valid CharacterCreateDto characterCreateDto) {
-        return CharacterMapper.toDto(this.characterRepository.save(CharacterMapper.toEntity(characterCreateDto)));
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+        GameCharacter character = CharacterMapper.toEntity(characterCreateDto);
+        character.setUser(user);
+        return CharacterMapper.toDto(this.characterRepository.save(character));
     }
 
     @Override
-    public CharacterDto updateCharacter(Long id, @Valid CharacterUpdateDto characterUpdateDto) {
+    @PreAuthorize("@characterSecurity.isOwner(#userId)")
+    public CharacterDto updateCharacter(Long id, @Valid CharacterUpdateDto characterUpdateDto, Long userId) {
         final GameCharacter existingCharacter = this.characterRepository.findById(id).orElseThrow(() -> new CharacterNotFoundException(id));
-
         final CharacterDto existingCharacterDto = CharacterMapper.toDto(existingCharacter);
 
         if(characterUpdateDto.getTotalLevel() < existingCharacterDto.getTotalLevel()) {
@@ -87,7 +99,8 @@ public class CharacterService implements ICharacterService{
     }
 
     @Override
-    public void deleteCharacter(Long id) {
+    @PreAuthorize("@characterSecurity.isOwner(#userId)")
+    public void deleteCharacter(Long id, Long userId) {
         this.characterRepository.deleteById(id);
     }
 }

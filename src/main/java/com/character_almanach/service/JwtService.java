@@ -27,6 +27,7 @@ public class JwtService {
 
         return Jwts.builder()
             .setSubject(userDetails.getUsername())
+            .claim("userId", userDetails.getId())
             .claim("roles", userDetails.getAuthorities().iterator().next().getAuthority())
             .setIssuedAt(new Date())
             .setExpiration(Date.from(Instant.now().plus(15, ChronoUnit.MINUTES)))

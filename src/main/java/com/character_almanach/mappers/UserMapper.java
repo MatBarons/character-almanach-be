@@ -29,13 +29,24 @@ public final class UserMapper {
         );
     }
 
-    public static User toEntity(UserRegisterDto user){
+    public static User toUserEntity(UserRegisterDto user){
         return new User(
             null,
             user.getEmail(),
             user.getUsername(),
             user.getPassword(),
             Roles.USER,
+            new ArrayList<>()
+        );
+    }
+
+    public static User toAdminEntity(UserRegisterDto user){
+        return new User(
+            null,
+            user.getEmail(),
+            user.getUsername(),
+            user.getPassword(),
+            Roles.ADMIN,
             new ArrayList<>()
         );
     }

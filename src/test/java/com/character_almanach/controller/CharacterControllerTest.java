@@ -73,7 +73,7 @@ public class CharacterControllerTest {
         character1.addClass(new CharacterClass("Paladin", "Oath of the Ancients", 3));
         character1.addClass(new CharacterClass("Warrior", "Samurai", 2));
 
-        when(characterService.getCharacter(1L)).thenReturn(CharacterMapper.toDto(character1));
+        when(characterService.getCharacter(1L, 1L)).thenReturn(CharacterMapper.toDto(character1));
 
         mockMvc.perform(get("/characters/1"))
             .andExpect(status().isOk())
