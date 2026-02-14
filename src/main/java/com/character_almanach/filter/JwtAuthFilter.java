@@ -2,12 +2,11 @@ package com.character_almanach.filter;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.character_almanach.service.CustomUserDetailsService;
@@ -17,13 +16,12 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 
-@Component
+@AllArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    @Autowired
     private JwtService jwtService;
-    @Autowired
     private CustomUserDetailsService userDetailsService;
 
     @Override
@@ -58,8 +56,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         new WebAuthenticationDetailsSource().buildDetails(request)
                     );
 
-                    SecurityContextHolder.getContext()
-                        .setAuthentication(authToken);
+                    SecurityContext context = SecurityContextHolder.createEmptyContext(); 
+                    context.setAuthentication(authToken); 
+                    SecurityContextHolder.setContext(context);
                 }
             }
         } catch (Exception e) {
