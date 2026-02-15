@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 
+import com.character_almanach.exception.token.ExpiredRefreshTokenException;
+import com.character_almanach.exception.token.InvalidRefreshTokenException;
 import com.character_almanach.mappers.RefreshTokenMapper;
 import com.character_almanach.model.user.RefreshToken;
 import com.character_almanach.model.user.User;
@@ -35,11 +37,13 @@ public class RefreshTokenService {
     }
 
     public RefreshToken verifyAndGet(String token) throws RuntimeException{
-        RefreshToken refreshToken = repository.findByToken(token).orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+        RefreshToken refreshToken = repository.findByToken(token).orElseThrow(
+            () -> new InvalidRefreshTokenException()
+        );
 
         if (refreshToken.getExpiryDate().isBefore(Instant.now())) {
             repository.delete(refreshToken);
-            throw new RuntimeException("Refresh token expired");
+            throw new ExpiredRefreshTokenException();
         }
 
         return refreshToken;

@@ -1,6 +1,8 @@
 package com.character_almanach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import com.character_almanach.dto.get.user.UserLoginDto;
 import com.character_almanach.exception.user.UserAlreadyExistsException;
 import com.character_almanach.exception.user.UserNotFoundException;
 import com.character_almanach.mappers.UserMapper;
+import com.character_almanach.model.user.CustomUserDetails;
 import com.character_almanach.model.user.User;
 import com.character_almanach.repository.UserRepository;
 import com.character_almanach.service.interfaces.IUserService;
@@ -17,7 +20,7 @@ import com.character_almanach.service.interfaces.IUserService;
 import jakarta.validation.Valid;
 
 @Service
-public class UserService implements IUserService {
+public class UserService implements IUserService,UserDetailsService {
     
     @Autowired
     private UserRepository userRepository;
@@ -32,7 +35,7 @@ public class UserService implements IUserService {
         userRepository.findByEmail(user.getEmail()).ifPresent(u -> {
             throw new UserAlreadyExistsException("User with email '" + user.getEmail() + "' already exists.");
         });
-        User entity = UserMapper.toUserEntity(user);
+        User entity = UserMapper.toEntity(user);
         entity.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(entity);
         return UserMapper.toDto(savedUser);
@@ -40,14 +43,26 @@ public class UserService implements IUserService {
     
     @Override
     public UserDto getUser(Long id){
-        return UserMapper.toDto(userRepository.findById(id).orElseThrow());
+        return UserMapper.toDto(userRepository.findById(id).orElseThrow(
+            () -> new UserNotFoundException("User with id " + id + " not found")
+        ));
     }
 
     @Override
     public UserDto refresh(UserLoginDto user){
         return UserMapper.toDto(userRepository.findByUsername(user.getUsername()).orElseThrow(
-            () -> new UserNotFoundException(user.getUsername())
+            () -> new UserNotFoundException("User with username " + user.getUsername() + " not found")
         ));
+    }
+
+    @Override
+    public CustomUserDetails loadUserByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+            .orElseThrow(() ->
+                new UsernameNotFoundException("User not found")
+            );
+
+        return new CustomUserDetails(user);
     }
     
 }

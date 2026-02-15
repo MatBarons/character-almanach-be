@@ -16,6 +16,8 @@ import com.character_almanach.exception.character.CharacterNotFoundException;
 import com.character_almanach.exception.character.ClassRemovalNotAllowedException;
 import com.character_almanach.exception.character.ReducingCharacterLevelException;
 import com.character_almanach.exception.character.SubclassChangeNotAllowedException;
+import com.character_almanach.exception.token.ExpiredRefreshTokenException;
+import com.character_almanach.exception.token.InvalidRefreshTokenException;
 import com.character_almanach.exception.user.UserAlreadyExistsException;
 import com.character_almanach.exception.user.UserNotFoundException;
 
@@ -75,7 +77,23 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    //Token Exceptions
+    @ExceptionHandler(InvalidRefreshTokenException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidRefreshToken(InvalidRefreshTokenException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ExpiredRefreshTokenException.class)
+    public ResponseEntity<Map<String, String>> handleExpiredRefreshToken(ExpiredRefreshTokenException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
     //THIS HANDLER IS ADDED TO HANDLE VALIDATION ERRORS
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handle(MethodArgumentNotValidException ex) {
 
@@ -88,7 +106,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
     }
 
-    // Optional: Handle other exceptions globally
+    // Handle other exceptions globally
+    
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneralException(Exception ex) {
         Map<String, String> errorResponse = new HashMap<>();
