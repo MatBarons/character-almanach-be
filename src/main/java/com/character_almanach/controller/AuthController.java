@@ -19,7 +19,6 @@ import com.character_almanach.dto.get.user.UserLoginDto;
 import com.character_almanach.dto.get.user.UserLoginResponseDto;
 import com.character_almanach.model.user.CustomUserDetails;
 import com.character_almanach.model.user.User;
-import com.character_almanach.service.CustomUserDetailsService;
 import com.character_almanach.service.JwtService;
 import com.character_almanach.service.RefreshTokenService;
 import com.character_almanach.service.UserService;
@@ -39,7 +38,7 @@ public class AuthController {
     @Autowired
     private UserService userService;
     @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private UserService userDetailsService;
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
