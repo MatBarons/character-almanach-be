@@ -19,6 +19,7 @@ import com.character_almanach.dto.get.user.UserLoginDto;
 import com.character_almanach.dto.get.user.UserLoginResponseDto;
 import com.character_almanach.model.user.CustomUserDetails;
 import com.character_almanach.model.user.User;
+import com.character_almanach.service.CustomUserDetailsService;
 import com.character_almanach.service.JwtService;
 import com.character_almanach.service.RefreshTokenService;
 import com.character_almanach.service.UserService;
@@ -38,7 +39,7 @@ public class AuthController {
     @Autowired
     private UserService userService;
     @Autowired
-    private UserService userDetailsService;
+    private CustomUserDetailsService userDetailsService;
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
@@ -74,6 +75,7 @@ public class AuthController {
 
     
     @GetMapping("/refresh-token")
+    @ResponseStatus(HttpStatus.OK)
     public UserLoginResponseDto refreshToken(@RequestParam String token) {
         User user = refreshTokenService.verifyAndGet(token).getUser();
         String accessToken = jwtService.generateToken(new CustomUserDetails(user));

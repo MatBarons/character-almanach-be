@@ -21,8 +21,8 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.character_almanach.filter.JwtAuthFilter;
+import com.character_almanach.service.CustomUserDetailsService;
 import com.character_almanach.service.JwtService;
-import com.character_almanach.service.UserService;
 
 import lombok.AllArgsConstructor;
 
@@ -33,11 +33,11 @@ public class SecurityConfiguration {
 
     private AuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private AccessDeniedHandler jwtAccessDeniedHandler;
-    private UserService userDetailsService;
+    private CustomUserDetailsService userDetailsService;
     private JwtService jwtService;
 
     @Bean
-    public JwtAuthFilter jwtAuthenticationFilter() {
+    JwtAuthFilter jwtAuthenticationFilter() {
         return new JwtAuthFilter(jwtService, userDetailsService);
     }
 
@@ -47,7 +47,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    AuthenticationProvider authenticationProvider(UserService userDetailsService,PasswordEncoder passwordEncoder) {
+    AuthenticationProvider authenticationProvider(CustomUserDetailsService userDetailsService,PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
@@ -59,7 +59,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public RegistrationBean jwtAuthFilterRegister(JwtAuthFilter filter) {
+    RegistrationBean jwtAuthFilterRegister(JwtAuthFilter filter) {
         FilterRegistrationBean<JwtAuthFilter> registrationBean = new FilterRegistrationBean<JwtAuthFilter>(filter);
         registrationBean.setEnabled(false);
         return registrationBean;

@@ -35,6 +35,10 @@ public class JwtService {
             .compact();
     }
 
+    public String extractUserId(String token){
+        return extractPayload(token).get("userId", String.class);
+    }
+
     public Roles extractRole(String token){
         return Roles.valueOf(extractPayload(token).get("roles",String.class));
     }
